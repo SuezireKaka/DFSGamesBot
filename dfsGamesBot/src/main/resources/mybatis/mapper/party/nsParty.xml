@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="www.disbot.dfsGames.api.party.mapper.PartyMapper">
+	<resultMap id="rmPartyVO" extends="nsEntity.rmTimeEntity"
+		type="www.disbot.dfsGames.api.party.model.PartyVO">
+		<result property="name" column="name" />
+		<discriminator javaType="String" column="discrim">
+			<case value="U" resultMap="rmUserVO" />
+         	<case value="G" resultMap="rmGroupVO" />
+		</discriminator>
+	</resultMap>
+	
+	<resultMap id="rmGroupVO" extends="rmPartyVO"
+		type="www.disbot.dfsGames.api.party.model.GroupVO">
+		<result property="isOpen" column="open" />
+		<result property="introduce" column="intro" />
+	</resultMap>
+	
+	<resultMap id="rmUserVO" extends="rmPartyVO"
+		type="www.disbot.dfsGames.api.party.model.UserVO">
+		<result property="discordId" column="dis_id" />
+		<collection property="roleList" columnPrefix="r_"
+			resultMap="rmRoleVO">
+		</collection>
+	</resultMap>
+	
+	<resultMap id="rmRoleVO" extends="nsEntity.rmEntity"
+		type="www.disbot.dfsGames.api.party.model.RoleVO">
+		<result property="name" column="name" />
+		<result property="info" column="info" />
+		<result property="isDefault" column="dflt" />
+		<association property="provider" columnPrefix="prov_"
+			resultMap="rmGroupVO"/>
+		<collection property="allowedActList" columnPrefix="act_"
+			resultMap="rmActVO">
+		</collection>
+	</resultMap>
+	
+	<resultMap id="rmActVO" type="www.disbot.dfsGames.api.party.model.act.ActVO">
+		<id property="act" column="act"/>
+		<result property="area" column="area" />
+		<result property="type" column="type" />
+		<result property="info" column="info" />
+	</resultMap>
+	
+	<!-- 	public List<RoleVO> listAllAnonymRoles(); -->
+	<select id="listAllAnonymRoles" resultMap="rmRoleVO">
+		select r.*,
+	        	prov.id prov_id, prov.reg_dt prov_reg_dt, prov.upt_dt prov_upt_dt,
+	        	prov.name prov_name, prov.discrim prov_discrim,
+	    	    g.open prov_open, g.intro prov_intro,
+	    	    act.act act_act, act.area act_area, act.type act_type, act.info act_info
+		  from t_role r
+		  left outer join t_party prov
+		    on r.provider = prov.id
+		  left outer join t_group g
+		    on r.provider = g.id
+		  left outer join rel_role_act allow
+		    on r.id = allow.role
+		  left outer join sys_act act
+		    on allow.act = act.act
+		 where act.area = 'Anonym'
+	</select>
+	
+	<!-- 	public List<RoleVO> listAllDefaultRolesOf(@Param("group") GroupVO group); -->
+	<select id="listAllDefaultRolesOf" resultMap="rmRoleVO">
+		select r.*,
+	        	prov.id prov_id, prov.reg_dt prov_reg_dt, prov.upt_dt prov_upt_dt,
+	        	prov.name prov_name, prov.discrim prov_discrim,
+	    	    g.open prov_open, g.intro prov_intro,
+	    	    act.act act_act, act.area act_area, act.type act_type, act.info act_info
+		  from t_role r
+		  left outer join t_party prov
+		    on r.provider = prov.id
+		  left outer join t_group g
+		    on r.provider = g.id
+		  left outer join rel_role_act allow
+		    on r.id = allow.role
+		  left outer join sys_act act
+		    on allow.act = act.act
+		 where r.provider = #{group.id}
+		   and r.dflt = 1;
+	</select>
+
+	<!-- 	public UserVO getUserByDiscordId(String discordId); -->
+	<select id="getUserByDiscordId" resultMap="rmPartyVO">
+		select u.*,
+	        	r.id r_id, r.name r_name, r.info r_info, r.dflt r_dflt,
+	        	prov.id r_prov_id, prov.reg_dt r_prov_reg_dt, prov.upt_dt r_prov_upt_dt,
+	        	prov.name r_prov_name, prov.discrim r_prov_discrim,
+	    	    g.open r_prov_open, g.intro r_prov_intro,
+	    	    act.act r_act_act, act.area r_act_area, act.type r_act_type, act.info r_act_info
+		  from t_party u
+		  left outer join rel_party_role rel
+		    on u.id = rel.party
+		  left outer join t_role r
+		    on rel.role = r.id
+		  left outer join t_party prov
+		    on r.provider = prov.id
+		  left outer join t_group g
+		    on r.provider = g.id
+		  left outer join rel_role_act allow
+		    on r.id = allow.role
+		  left outer join sys_act act
+		    on allow.act = act.act
+		 where u.discrim = 'U'
+		   and u.dis_id = #{discordId};
+	</select>
+
+	<!-- public boolean createUser(@Param("user") UserVO user); -->
+	<insert id="createUser">
+		insert into t_party(id, discrim, name, dis_id)
+		values(#{id}, 'U', #{name}, #{discordId});
+	</insert>
+	
+	<!-- public boolean grantRolesToUser(@Param("user") UserVO user,
+			@Param("rolesList") List<RoleVO> rolesList); -->
+	<insert id="grantRolesToUser">
+		insert into rel_party_role (party, role)
+        select sub.*
+          from
+        <foreach open="(" collection="rolesList" item="role" separator=" union all " close=")">
+        	select
+        		#{user.id} as party,
+        		#{role.id} as role
+        </foreach> sub;
+	</insert>
+</mapper>
