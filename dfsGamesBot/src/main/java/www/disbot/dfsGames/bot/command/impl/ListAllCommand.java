@@ -61,7 +61,7 @@ public class ListAllCommand implements Command {
 	   	contents.parse();
 	   	
 	   	return CommandResultView.builder()
-	   			.title(ListAllCommand.USAGE)
+	   			.title(USAGE)
 	   			.contents(contents)
 	   			.build();
 	}

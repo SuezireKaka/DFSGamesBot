@@ -47,7 +47,9 @@ public class Page<T> {
 	}
 	
 	public void applyFoundNumber(int foundNumber) {
-		setTotalPage(foundNumber / ONE_PAGE_NUM + 1);
+		int newTotalPage = foundNumber / ONE_PAGE_NUM + 1;
+		setTotalPage(newTotalPage);
+		nowPage = Math.min(nowPage, newTotalPage);
 	}
 	
 }

@@ -9,7 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -17,6 +16,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import www.disbot.dfsGames.bot.listener.MessageListener;
 import www.disbot.dfsGames.sys.context.ApiRequestInfo;
 import www.disbot.dfsGames.sys.context.DiscordBotToken;
+import www.disbot.dfsGames.sys.context.GameSetup;
 import www.disbot.dfsGames.sys.context.MakerDiscordID;
 
 @SpringBootApplication
@@ -35,6 +35,10 @@ public class DFSGamesBotApplication {
 	
 	public static WebClient callWebClient() {
 		return webClient;
+	}
+	
+	public static GameSetup callGameSetup() {
+		return context.getBean(GameSetup.class);
 	}
 
 	public static void main(String[] args) throws LoginException {

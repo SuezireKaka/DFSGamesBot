@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Component
-public class GameAddress {
+public class GameSetup {
 	@Value("${game.address}")
     private String gameAddress;
 }
