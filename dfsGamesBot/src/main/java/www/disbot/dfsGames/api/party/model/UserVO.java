@@ -26,7 +26,8 @@ public class UserVO extends PartyVO implements UserDetails {
 	private List<RoleVO> roleList = new ArrayList<>();
 	
 	public UserVO adjustName() {
-		String userName = DFSGamesBotApplication.main.retrieveUserById(this.discordId)
+		String userName = DFSGamesBotApplication.callJda()
+				.retrieveUserById(this.discordId)
 				.map(User::getName)
 				.complete();
 		

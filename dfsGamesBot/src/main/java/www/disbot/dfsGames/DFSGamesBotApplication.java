@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -20,22 +21,32 @@ import www.disbot.dfsGames.sys.context.MakerDiscordID;
 
 @SpringBootApplication
 public class DFSGamesBotApplication {
-	public static ApplicationContext context;
-	public static JDA main;
-	public static WebClient webClient;
+	private static ApplicationContext context;
+	private static JDA jda;
+	private static WebClient webClient;
+	
+	public static ApplicationContext callContext() {
+		return context;
+	}
+	
+	public static JDA callJda() {
+		return jda;
+	}
+	
+	public static WebClient callWebClient() {
+		return webClient;
+	}
 
 	public static void main(String[] args) throws LoginException {
 		context = SpringApplication.run(DFSGamesBotApplication.class, args);
 
 		DiscordBotToken discordBotTokenEntity = context.getBean(DiscordBotToken.class);
-
 		String discordBotToken = discordBotTokenEntity.getDiscordBotToken();
 
 		MakerDiscordID makerDiscordIDEntity = context.getBean(MakerDiscordID.class);
-
 		String makerDiscordID = makerDiscordIDEntity.getMakerDiscordID();
 
-		main = JDABuilder.createDefault(discordBotToken).setActivity(Activity.playing("자바로 동작"))
+		jda = JDABuilder.createDefault(discordBotToken).setActivity(Activity.playing("자바로 동작"))
 				.enableIntents(GatewayIntent.MESSAGE_CONTENT)
 				.addEventListeners(
 						new MessageListener(makerDiscordID))

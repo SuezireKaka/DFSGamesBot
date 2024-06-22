@@ -10,7 +10,7 @@ import www.disbot.dfsGames.DFSGamesBotApplication;
 @RequiredArgsConstructor
 public class WebClientRequestStrategy implements RequestStrategy {
 	private ContextHandler handler =
-			new ContextHandler(DFSGamesBotApplication.context);
+			new ContextHandler(DFSGamesBotApplication.callContext());
 	
 	private User user;
 
@@ -20,7 +20,7 @@ public class WebClientRequestStrategy implements RequestStrategy {
 
 	@Override
 	public <B> String requestTo(String urlTail, HttpMethod method, B body) {
-		WebClient webClient = DFSGamesBotApplication.webClient;
+		WebClient webClient = DFSGamesBotApplication.callWebClient();
 		
 		String userId = user == null ? "" : user.getId();
 		
