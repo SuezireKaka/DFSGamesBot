@@ -16,6 +16,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @JsonIgnoreProperties({"onePageNum"})
 public class Page<T> {
+	public static final int MIN_INDEX = 1;
+	
 	public static final int ONE_PAGE_NUM = 10;
 	
 	public static final String PAGE_TERMINOLOGY = "page";

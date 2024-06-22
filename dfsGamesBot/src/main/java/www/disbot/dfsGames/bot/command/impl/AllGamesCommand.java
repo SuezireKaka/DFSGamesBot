@@ -1,6 +1,7 @@
 package www.disbot.dfsGames.bot.command.impl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,8 @@ import www.disbot.dfsGames.api.framework.model.structure.Page;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
-import www.disbot.dfsGames.bot.model.data.HelloWorldVO;
 import www.disbot.dfsGames.bot.parser.DiscordContents;
-import www.disbot.dfsGames.bot.parser.impl.HelloWorldParser;
+import www.disbot.dfsGames.bot.parser.impl.AllGamesParser;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.CommandResultView;
 
@@ -50,19 +50,27 @@ public class AllGamesCommand implements Command {
 		List<File> gameFilesList = Arrays.stream(directory.listFiles())
 				.collect(Collectors.toList());
 		
-		List<String> gameNamesOnPage = gameFilesList.subList(0, 1).stream()
+		int gamesNum = gameFilesList.size();
+		
+		int realPageNum = minmax(pageNum, Page.MIN_INDEX, gamesNum / 10 + 1);
+		
+		int startIndex = (realPageNum - 1) * Page.ONE_PAGE_NUM;
+		int endIndex = Math.min(realPageNum * Page.ONE_PAGE_NUM, gamesNum);
+		
+		List<String> gameNamesOnPage = gameFilesList.subList(startIndex, endIndex)
+				.stream()
 				.map(file -> {
 					String fullName = file.getName();
 					return fullName.substring(0, fullName.lastIndexOf("."));
 				})
 				.collect(Collectors.toList());
 		
-		Page<String> page = new Page<>(pageNum, gameNamesOnPage);
-		page.applyFoundNumber(gameFilesList.size());
+		Page<String> result = new Page<>(realPageNum, new ArrayList<>());
+		result.applyFoundNumber(gamesNum);
 		
-		HelloWorldVO result = new HelloWorldVO("Hello, world!");
+		result.addAll(gameNamesOnPage);
 		
-		DiscordContents contents = new DiscordContents(new HelloWorldParser(result));
+		DiscordContents contents = new DiscordContents(new AllGamesParser(result));
 	   	
 		contents.parse();
 		
@@ -70,5 +78,9 @@ public class AllGamesCommand implements Command {
 	   			.title(USAGE)
 	   			.contents(contents)
 	   			.build();
+	}
+
+	private int minmax(int val, int min, int max) {
+		return Math.min(Math.max(val, min), max);
 	}
 }
