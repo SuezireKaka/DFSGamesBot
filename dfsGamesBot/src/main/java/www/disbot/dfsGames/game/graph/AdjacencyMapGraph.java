@@ -6,11 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import www.disbot.dfsGames.bot.model.structure.Pair;
-import www.disbot.dfsGames.game.visitor.Visitor;
 
 public class AdjacencyMapGraph<V> implements Graph<V> {
 	private Map<V, List<V>> adjacencyMap = new HashMap<>();
-	private List<V> visitedVerticesList = new ArrayList<>();
 
 	@Override
 	public boolean isAllConnected() {
@@ -19,33 +17,18 @@ public class AdjacencyMapGraph<V> implements Graph<V> {
 	}
 
 	@Override
-	public void addVertex(V vertex) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void addEdge(Pair<V, V> edge) {
-		// TODO Auto-generated method stub
-		
+		V key = edge.getFirst();
+		if (! adjacencyMap.containsKey(key)) {
+			adjacencyMap.put(key, new ArrayList<>());
+		}
+		adjacencyMap.get(key).add(edge.getSecond());
 	}
-
+	
 	@Override
-	public boolean hasVisited(V vertex) {
-		// TODO Auto-generated method stub
-		return false;
+	public List<V> getNeighborsList(V vertex) {
+		return adjacencyMap.containsKey(vertex)
+				? adjacencyMap.get(vertex)
+				: new ArrayList<>();
 	}
-
-	@Override
-	public List<V> getAllNextVerticesOf(V vertex) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void checkVisitor(Visitor v) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
