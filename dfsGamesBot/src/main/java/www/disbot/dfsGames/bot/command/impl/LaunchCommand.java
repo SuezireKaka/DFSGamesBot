@@ -12,11 +12,11 @@ import www.disbot.dfsGames.bot.parser.impl.HelloWorldParser;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.CommandResultView;
 
-public class HelloWorldCommand implements Command {
-	public static final String COMMAND = Command.PREFIX + "launch";
-	public static final String EXPLAIN = "DFS 게임을 시작할게요";
+public class LaunchCommand implements Command {
+	public static final String COMMAND = Command.PREFIX + "hello";
+	public static final String EXPLAIN = "봇이 헬로월드를 시전해요";
 	
-	private static final String[] ARGS_NAME_ARRAY = new String[]{"게임명"};
+	private static final String[] ARGS_NAME_ARRAY = new String[]{};
 	
 	public static final String USAGE = ArgsPacker.usagePack(COMMAND, ARGS_NAME_ARRAY);
 	
