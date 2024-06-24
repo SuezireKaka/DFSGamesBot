@@ -8,4 +8,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 @Setter
 public abstract class DiscordView implements View {
 	private EmbedBuilder embedBuilder = new EmbedBuilder().setAuthor("DFS Games");
+	
+	public String extractUsage(Class<?> cls) throws Exception {
+		return (String) cls.getField("USAGE").get("");
+	}
 }

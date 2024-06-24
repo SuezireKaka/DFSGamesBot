@@ -20,7 +20,7 @@ public class CommandResultView extends DiscordView {
 	
 	@Override
 	public <T> void init(Class<T> cls) throws Exception {
-		String usage = (String) cls.getField("USAGE").get("");
+		String usage = extractUsage(cls);
 		
 		setEmbedBuilder(this.getEmbedBuilder()
 				.setTitle(usage)
