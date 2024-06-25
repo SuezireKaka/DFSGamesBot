@@ -1,15 +1,14 @@
 package www.disbot.dfsGames.bot.command.impl;
 
-import java.io.File;
 import java.util.Map;
 
 import net.dv8tion.jda.api.entities.User;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
-import www.disbot.dfsGames.bot.exception.NoGameFoundException;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
+import www.disbot.dfsGames.game.model.GameDTO;
 import www.disbot.dfsGames.game.search.GameFileManager;
 
 public class LaunchCommand implements Command {
@@ -35,11 +34,8 @@ public class LaunchCommand implements Command {
 		
 		String gameName = argsMap.get(ARGS_NAME_ARRAY[0]);
 		
-		File gameFile = GameFileManager.getInstance().findGameFileWithName(gameName);
-		
-		if (gameFile == null) {
-			throw new NoGameFoundException(gameName);
-		}
+		GameDTO dto = GameFileManager.getInstance()
+				.extractGame(gameName);
 		
 		//DiscordContents contents = new DiscordContents(new HelloWorldParser(result));
 	   	

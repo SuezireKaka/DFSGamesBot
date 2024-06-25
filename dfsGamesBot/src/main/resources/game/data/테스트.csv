@@ -1,13 +1,26 @@
+D
+
+테스트용 게임입니다
+
 A,B
 A,C
 A,D
 A,E
 A,F
 A,G
+B,A
 B,D
 B,G
+C,A
 C,D
 C,E
 C,G
+D,A
+D,B
 D,F
 E,F
+F,A
+F,E
+G,A
+G,B
+G,C

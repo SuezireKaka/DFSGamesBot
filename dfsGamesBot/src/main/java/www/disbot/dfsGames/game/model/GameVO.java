@@ -15,6 +15,7 @@ import www.disbot.dfsGames.game.visitor.Visitor;
 @Getter
 public class GameVO {
 	private String name;
+	private String description;
 	private Visitor<String> visitor = new Visitor<>();
 	private Graph<String> background = new AdjacencyMapGraph<>();
 	private List<User> playerList = new ArrayList<>();
