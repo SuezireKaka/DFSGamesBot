@@ -7,10 +7,15 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.ErrorView;
+import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
 
 @Slf4j
 public class ResponseCarrier {
-	public void carryResponseToChannel(MessageChannel msgChannel, View resultView) throws Exception {		
+	public void carryResponseToChannel(MessageChannel msgChannel, View resultView, String makerID) throws Exception {
+		if (resultView instanceof UnderPreparingView) {
+			((UnderPreparingView) resultView).setMakerUsername(makerID);
+		}
+		
 		List<MessageEmbed> resultEmbedList = resultView.close();
 		
 		for (MessageEmbed embed : resultEmbedList) {
@@ -29,7 +34,7 @@ public class ResponseCarrier {
 		try {
 			errorView.init(Exception.class);
 			
-			carryResponseToChannel(msgChannel, errorView);
+			carryResponseToChannel(msgChannel, errorView, makerID);
 		}
 		catch (Exception fatalError) {
 			fatalError.printStackTrace();

@@ -60,7 +60,7 @@ public class MessageListener extends ListenerAdapter {
 					user, commandKey, commandArgs, asyncMessage, requester);
 
 			if (resultView != null) {
-				carrier.carryResponseToChannel(msgChannel, resultView);
+				carrier.carryResponseToChannel(msgChannel, resultView, makerID);
 			}
 		} catch (Exception e) {
 			carrier.carryErrorToChannel(msgChannel, e, makerID);

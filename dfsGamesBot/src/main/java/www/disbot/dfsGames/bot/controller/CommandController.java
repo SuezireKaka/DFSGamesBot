@@ -3,11 +3,14 @@ package www.disbot.dfsGames.bot.controller;
 import java.util.Map;
 
 import net.dv8tion.jda.api.entities.User;
+import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.command.api.WebClientRequestStrategy;
 import www.disbot.dfsGames.bot.command.impl.AllGamesCommand;
 import www.disbot.dfsGames.bot.command.impl.HelloWorldCommand;
+import www.disbot.dfsGames.bot.command.impl.LaunchCommand;
 import www.disbot.dfsGames.bot.command.impl.ListAllCommand;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
+import www.disbot.dfsGames.bot.exception.NoCommandFoundException;
 import www.disbot.dfsGames.bot.view.View;
 
 public class CommandController {
@@ -47,6 +50,20 @@ public class CommandController {
         	result = new AllGamesCommand().command(user, packedArgs);
         	result.init(AllGamesCommand.class);
         }
+		
+		else if (key.equalsIgnoreCase(LaunchCommand.COMMAND)
+        		&& args.length == new LaunchCommand().getArgsNameArray().length) {
+			
+        	packedArgs = new ArgsPacker<LaunchCommand>()
+                	.mapPack(new LaunchCommand(), args);
+
+        	result = new LaunchCommand().command(user, packedArgs);
+        	result.init(LaunchCommand.class);
+        }
+		
+		else if (key.startsWith(Command.PREFIX) && ! key.equals(Command.PREFIX)) {
+			throw new NoCommandFoundException(key, args);
+		}
 		
 		return result;
 	}

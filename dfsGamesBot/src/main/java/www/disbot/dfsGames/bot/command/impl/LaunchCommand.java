@@ -3,14 +3,12 @@ package www.disbot.dfsGames.bot.command.impl;
 import java.util.Map;
 
 import net.dv8tion.jda.api.entities.User;
-import www.disbot.dfsGames.DFSGamesBotApplication;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
-import www.disbot.dfsGames.bot.parser.DiscordContents;
-import www.disbot.dfsGames.bot.parser.impl.HelloWorldParser;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
+import www.disbot.dfsGames.game.search.GameFileManager;
 
 public class LaunchCommand implements Command {
 	public static final String COMMAND = Command.PREFIX + "launch";
@@ -35,12 +33,10 @@ public class LaunchCommand implements Command {
 		
 		String gameName = argsMap.get(ARGS_NAME_ARRAY[0]);
 		
-		
-		
 		//DiscordContents contents = new DiscordContents(new HelloWorldParser(result));
 	   	
 		//contents.parse();
 		
-	   	return new UnderPreparingView();
+	   	return new UnderPreparingView("금방 만들겠습니다 제성합니다");
 	}
 }
