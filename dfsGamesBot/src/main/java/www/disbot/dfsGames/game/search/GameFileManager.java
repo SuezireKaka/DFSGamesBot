@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import www.disbot.dfsGames.DFSGamesBotApplication;
+import www.disbot.dfsGames.bot.exception.NoGameFoundException;
 
 public class GameFileManager {
 	private static final GameFileManager INSTANECE = new GameFileManager();
@@ -25,13 +26,13 @@ public class GameFileManager {
 				.collect(Collectors.toList());
 	}
 	
-	public File findGameFileWithName(String name) {
+	public File findGameFileWithName(String name) throws Exception {
 		List<File> matchingGamesList = findGameFilesList().stream()
 				.filter(file -> file.getName().startsWith(name))
 				.collect(Collectors.toList());
 		
 		if (matchingGamesList.size() == 0) {
-			return null;
+			throw new NoGameFoundException(name);
 		}
 		
 		return matchingGamesList.get(0);
