@@ -17,6 +17,7 @@ import www.disbot.dfsGames.bot.parser.DiscordContents;
 import www.disbot.dfsGames.bot.parser.impl.AllGamesParser;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.CommandResultView;
+import www.disbot.dfsGames.game.search.GameFileManager;
 
 public class AllGamesCommand implements Command {
 	public static final String COMMAND = Command.PREFIX + "allGames";
@@ -45,10 +46,7 @@ public class AllGamesCommand implements Command {
 		
 		int pageNum = Integer.valueOf(pageString);
 		
-		File directory = new File(DFSGamesBotApplication.callGameSetup().getGameAddress());
-		
-		List<File> gameFilesList = Arrays.stream(directory.listFiles())
-				.collect(Collectors.toList());
+		List<File> gameFilesList = GameFileManager.getInstance().askGameFilesList();
 		
 		int gamesNum = gameFilesList.size();
 		
