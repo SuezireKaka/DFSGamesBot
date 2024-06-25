@@ -1,5 +1,6 @@
 package www.disbot.dfsGames.bot.parser;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,11 @@ public abstract class DiscordParser implements ContentsParser {
 	@Override
 	public List<List<Pair<ParseType, String>>> parse() throws Exception {
 		return applyDiscordRule(parseLemma());
+	}
+	
+	@Override
+	public File extractFile() {
+		return null;
 	}
 	
 	private List<List<Pair<ParseType, String>>> applyDiscordRule(

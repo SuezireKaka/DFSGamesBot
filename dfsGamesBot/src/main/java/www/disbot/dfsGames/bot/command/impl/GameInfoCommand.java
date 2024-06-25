@@ -9,6 +9,7 @@ import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
 import www.disbot.dfsGames.bot.parser.DiscordContents;
 import www.disbot.dfsGames.bot.parser.impl.GameInfoParser;
 import www.disbot.dfsGames.bot.view.View;
+import www.disbot.dfsGames.bot.view.impl.CommandResultView;
 import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
 import www.disbot.dfsGames.game.model.MetaInfoVO;
 import www.disbot.dfsGames.game.search.GameFileManager;
@@ -41,8 +42,11 @@ public class GameInfoCommand implements Command {
 		
 		DiscordContents contents = new DiscordContents(new GameInfoParser(result));
 	   	
-		//contents.parse();
+		contents.parse();
 		
-	   	return new UnderPreparingView("금방 만들겠습니다 제성합니다");
+		return CommandResultView.builder()
+	   			.title(USAGE)
+	   			.contents(contents)
+	   			.build();
 	}
 }

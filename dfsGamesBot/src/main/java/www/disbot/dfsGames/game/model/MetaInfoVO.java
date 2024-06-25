@@ -10,7 +10,7 @@ import lombok.Getter;
 public class MetaInfoVO {
 	public static final String DIRECTED = "D";
 	
-	private boolean directed;
+	private boolean isDirected;
 	private String name;
 	private String introduce;
 	

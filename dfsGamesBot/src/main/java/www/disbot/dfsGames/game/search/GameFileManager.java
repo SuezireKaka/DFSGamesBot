@@ -21,7 +21,7 @@ public class GameFileManager {
 			new File(DFSGamesBotApplication.callGameSetup().getGameAddress());
 	
 	public final String GAME_EXTENSION = ".csv";
-	public final String DATA_SEPERATOR = "\n\n";
+	public final String DATA_SEPERATOR = "\r\n\r\n";
 	
 	public List<File> findGameFilesList() {
 		return Arrays.stream(directory.listFiles())

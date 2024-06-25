@@ -55,10 +55,10 @@ public class CommandController {
 		else if (key.equalsIgnoreCase(GameInfoCommand.COMMAND)
         		&& args.length == new LaunchCommand().getArgsNameArray().length) {
 			
-        	packedArgs = new ArgsPacker<LaunchCommand>()
-                	.mapPack(new LaunchCommand(), args);
+        	packedArgs = new ArgsPacker<GameInfoCommand>()
+                	.mapPack(new GameInfoCommand(), args);
 
-        	result = new LaunchCommand().command(user, packedArgs);
+        	result = new GameInfoCommand().command(user, packedArgs);
         	result.init(LaunchCommand.class);
         }
 		
