@@ -8,8 +8,7 @@ import java.util.stream.Collectors;
 
 import www.disbot.dfsGames.DFSGamesBotApplication;
 import www.disbot.dfsGames.bot.exception.NoGameFoundException;
-import www.disbot.dfsGames.game.model.GameDTO;
-import www.disbot.dfsGames.game.model.GameVO;
+import www.disbot.dfsGames.game.model.MetaInfoVO;
 
 public class GameFileManager {
 	private static final GameFileManager INSTANECE = new GameFileManager();
@@ -30,13 +29,13 @@ public class GameFileManager {
 				.collect(Collectors.toList());
 	}
 	
-	public GameDTO extractGame(String name) throws Exception {
+	public MetaInfoVO extractMetaInfo(String name) throws Exception {
 		File gameFile = findGameFileWithName(name);
 		
 		String[] contents = Files.readString(gameFile.toPath()).split(DATA_SEPERATOR);
 		
-		return new GameDTO(contents[0].equals(GameDTO.DIRECTED)
-				, name, contents[1]);
+		return new MetaInfoVO(contents[0].equals(MetaInfoVO.DIRECTED),
+				name, contents[1], gameFile);
 	}
 	
 	private File findGameFileWithName(String name) throws Exception {

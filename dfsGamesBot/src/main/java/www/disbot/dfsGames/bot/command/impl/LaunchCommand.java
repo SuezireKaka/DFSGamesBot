@@ -8,7 +8,7 @@ import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
-import www.disbot.dfsGames.game.model.GameDTO;
+import www.disbot.dfsGames.game.model.MetaInfoVO;
 import www.disbot.dfsGames.game.search.GameFileManager;
 
 public class LaunchCommand implements Command {
@@ -34,8 +34,8 @@ public class LaunchCommand implements Command {
 		
 		String gameName = argsMap.get(ARGS_NAME_ARRAY[0]);
 		
-		GameDTO dto = GameFileManager.getInstance()
-				.extractGame(gameName);
+		MetaInfoVO dto = GameFileManager.getInstance()
+				.extractMetaInfo(gameName);
 		
 		//DiscordContents contents = new DiscordContents(new HelloWorldParser(result));
 	   	
