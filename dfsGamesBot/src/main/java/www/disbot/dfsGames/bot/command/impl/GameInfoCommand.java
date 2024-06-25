@@ -6,14 +6,16 @@ import net.dv8tion.jda.api.entities.User;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
+import www.disbot.dfsGames.bot.parser.DiscordContents;
+import www.disbot.dfsGames.bot.parser.impl.GameInfoParser;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
 import www.disbot.dfsGames.game.model.MetaInfoVO;
 import www.disbot.dfsGames.game.search.GameFileManager;
 
 public class GameInfoCommand implements Command {
-	public static final String COMMAND = Command.PREFIX + "launch";
-	public static final String EXPLAIN = "DFS 게임을 시작할게요";
+	public static final String COMMAND = Command.PREFIX + "info";
+	public static final String EXPLAIN = "특정 게임의 정보를 불러와요";
 	
 	private static final String[] ARGS_NAME_ARRAY = new String[]{"게임명"};
 	
@@ -34,10 +36,10 @@ public class GameInfoCommand implements Command {
 		
 		String gameName = argsMap.get(ARGS_NAME_ARRAY[0]);
 		
-		MetaInfoVO dto = GameFileManager.getInstance()
+		MetaInfoVO result = GameFileManager.getInstance()
 				.extractMetaInfo(gameName);
 		
-		//DiscordContents contents = new DiscordContents(new HelloWorldParser(result));
+		DiscordContents contents = new DiscordContents(new GameInfoParser(result));
 	   	
 		//contents.parse();
 		
