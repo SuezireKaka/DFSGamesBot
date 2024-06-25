@@ -1,6 +1,7 @@
 package www.disbot.dfsGames.bot.view.impl;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import www.disbot.dfsGames.bot.model.structure.Pair;
 import www.disbot.dfsGames.bot.view.DiscordView;
 
 @Getter
@@ -41,10 +43,10 @@ public class UnderPreparingView extends DiscordView {
 	}
 
 	@Override
-	public List<MessageEmbed> close() {		
-		List<MessageEmbed> result = new ArrayList<>();
+	public Pair<List<MessageEmbed>, File> close() {		
+		List<MessageEmbed> embedList = new ArrayList<>();
 		
-		result.add(this.getEmbedBuilder()
+		embedList.add(this.getEmbedBuilder()
 				.addField(MAKER_MSG_TYPENAME,
 						msg,
 					false)
@@ -53,6 +55,6 @@ public class UnderPreparingView extends DiscordView {
 					false)
 				.build());
 		
-		return result;
+		return new Pair<>(embedList, null);
 	}
 }

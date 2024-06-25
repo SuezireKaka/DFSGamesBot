@@ -59,7 +59,7 @@ public class CommandController {
                 	.mapPack(new GameInfoCommand(), args);
 
         	result = new GameInfoCommand().command(user, packedArgs);
-        	result.init(LaunchCommand.class);
+        	result.init(GameInfoCommand.class);
         }
 		
 		else if (key.equalsIgnoreCase(LaunchCommand.COMMAND)

@@ -1,12 +1,14 @@
 package www.disbot.dfsGames.bot.view.impl;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import www.disbot.dfsGames.bot.model.structure.Pair;
 import www.disbot.dfsGames.bot.view.DiscordView;
 
 @Getter
@@ -33,15 +35,15 @@ public class ErrorView extends DiscordView {
 	}
 
 	@Override
-	public List<MessageEmbed> close() {		
-		List<MessageEmbed> result = new ArrayList<>();
+	public Pair<List<MessageEmbed>, File> close() {		
+		List<MessageEmbed> embedList = new ArrayList<>();
 		
-		result.add(this.getEmbedBuilder()
+		embedList.add(this.getEmbedBuilder()
 				.addField(ERROR_FIELD_TYPENAME,
 					ERROR_ALARM + MENTION_FORMAT.formatted(makerUsername),
 					false)
 				.build());
 		
-		return result;
+		return new Pair<>(embedList, null);
 	}
 }

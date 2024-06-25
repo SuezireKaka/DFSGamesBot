@@ -1,9 +1,11 @@
 package www.disbot.dfsGames.bot.view;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.List;
 
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import www.disbot.dfsGames.bot.model.structure.Pair;
 
 public interface View {
 	public static final String ITALIC = "*%s*";
@@ -21,5 +23,5 @@ public interface View {
 	
 	public <T> void init(Class<T> cls) throws Exception;
 	
-	public List<MessageEmbed> close() throws Exception;
+	public Pair<List<MessageEmbed>, File> close() throws Exception;
 }

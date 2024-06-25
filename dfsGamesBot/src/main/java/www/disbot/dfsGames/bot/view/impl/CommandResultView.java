@@ -1,5 +1,6 @@
 package www.disbot.dfsGames.bot.view.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +9,8 @@ import lombok.Getter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import www.disbot.dfsGames.bot.model.structure.Pair;
-import www.disbot.dfsGames.bot.parser.DiscordContents;
 import www.disbot.dfsGames.bot.parser.ContentsParser.ParseType;
+import www.disbot.dfsGames.bot.parser.DiscordContents;
 import www.disbot.dfsGames.bot.view.DiscordView;
 
 @Getter
@@ -29,10 +30,10 @@ public class CommandResultView extends DiscordView {
 	}
 
 	@Override
-	public List<MessageEmbed> close() throws Exception {
+	public Pair<List<MessageEmbed>, File> close() throws Exception {
 		List<List<Pair<ParseType, String>>> parsedContents = contents.getContents();
 		
-		List<MessageEmbed> result = new ArrayList<>();
+		List<MessageEmbed> embedList = new ArrayList<>();
 		
 		for (List<Pair<ParseType, String>> lemma : parsedContents) {
 			EmbedBuilder safeBuilder = this.getEmbedBuilder();
@@ -49,10 +50,10 @@ public class CommandResultView extends DiscordView {
 				safeBuilder.addField(key, val, false);
 			}
 			
-			result.add(safeBuilder.build());
+			embedList.add(safeBuilder.build());
 		}
 		
-		return result;
+		return new Pair<>(embedList, contents.getParser().extractFile());
 	}
 
 }
