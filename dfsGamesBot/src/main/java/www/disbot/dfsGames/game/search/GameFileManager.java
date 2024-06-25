@@ -10,15 +10,30 @@ import www.disbot.dfsGames.DFSGamesBotApplication;
 public class GameFileManager {
 	private static final GameFileManager INSTANECE = new GameFileManager();
 	
-	private final File directory =
-			new File(DFSGamesBotApplication.callGameSetup().getGameAddress());
-	
 	public static GameFileManager getInstance() {
 		return INSTANECE;
 	}
 	
-	public List<File> askGameFilesList() {
+	private final File directory =
+			new File(DFSGamesBotApplication.callGameSetup().getGameAddress());
+	
+	public final String GAME_EXTENSION = ".csv";
+	
+	public List<File> findGameFilesList() {
 		return Arrays.stream(directory.listFiles())
+				.filter(file -> file.getName().endsWith(GAME_EXTENSION))
 				.collect(Collectors.toList());
+	}
+	
+	public File findGameFileWithName(String name) {
+		List<File> matchingGamesList = findGameFilesList().stream()
+				.filter(file -> file.getName().startsWith(name))
+				.collect(Collectors.toList());
+		
+		if (matchingGamesList.size() == 0) {
+			return null;
+		}
+		
+		return matchingGamesList.get(0);
 	}
 }

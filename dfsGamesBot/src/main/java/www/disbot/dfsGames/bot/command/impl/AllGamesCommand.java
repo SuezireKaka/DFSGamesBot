@@ -46,7 +46,7 @@ public class AllGamesCommand implements Command {
 		
 		int pageNum = Integer.valueOf(pageString);
 		
-		List<File> gameFilesList = GameFileManager.getInstance().askGameFilesList();
+		List<File> gameFilesList = GameFileManager.getInstance().findGameFilesList();
 		
 		int gamesNum = gameFilesList.size();
 		
