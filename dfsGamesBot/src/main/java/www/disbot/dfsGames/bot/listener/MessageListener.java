@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import www.disbot.dfsGames.bot.ResponseCarrier;
@@ -34,7 +34,7 @@ public class MessageListener extends ListenerAdapter {
 		User user = event.getAuthor();
 		requester.save(user);
 		
-		MessageChannel msgChannel = event.getChannel();
+		GuildMessageChannel msgChannel = (GuildMessageChannel) event.getChannel();
 
 		Message message = event.getMessage();
 

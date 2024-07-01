@@ -3,7 +3,7 @@ package www.disbot.dfsGames.bot.controller;
 import java.util.Map;
 
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.command.api.WebClientRequestStrategy;
 import www.disbot.dfsGames.bot.command.impl.AllGamesCommand;
@@ -17,7 +17,7 @@ import www.disbot.dfsGames.bot.view.View;
 
 public class CommandController {
 	
-	public View execute(User user, MessageChannel channel,
+	public View execute(User user, GuildMessageChannel channel,
 			String key, String[] args, String asyncMessage,
 			WebClientRequestStrategy requester) throws Exception {
 		Map<String, String> packedArgs;

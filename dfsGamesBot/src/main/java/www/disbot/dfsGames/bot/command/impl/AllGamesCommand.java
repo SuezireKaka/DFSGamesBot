@@ -2,14 +2,12 @@ package www.disbot.dfsGames.bot.command.impl;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-import www.disbot.dfsGames.DFSGamesBotApplication;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.api.framework.model.structure.Page;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
@@ -36,7 +34,7 @@ public class AllGamesCommand implements Command {
 	}
 	
 	@Override
-	public View command(User user, MessageChannel channel,
+	public View command(User user, GuildMessageChannel channel,
 			Map<String, String> argsMap) throws Exception {
 		if (argsMap.size() != ARGS_NAME_ARRAY.length) {
 			throw new ArgsNumberDismatchException(

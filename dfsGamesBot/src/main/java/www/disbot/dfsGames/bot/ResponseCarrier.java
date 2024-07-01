@@ -6,6 +6,7 @@ import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.utils.FileUpload;
 import www.disbot.dfsGames.bot.model.structure.Pair;
@@ -15,7 +16,7 @@ import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
 
 @Slf4j
 public class ResponseCarrier {
-	public void carryResponseToChannel(MessageChannel msgChannel, View resultView, String makerID) throws Exception {
+	public void carryResponseToChannel(GuildMessageChannel channel, View resultView, String makerID) throws Exception {
 		if (resultView instanceof UnderPreparingView) {
 			((UnderPreparingView) resultView).setMakerUsername(makerID);
 		}
@@ -27,7 +28,7 @@ public class ResponseCarrier {
 		File resultAttachFile = resultPair.getSecond();
 		
 		for (MessageEmbed embed : resultEmbedList) {
-			msgChannel.sendMessage("")
+			channel.sendMessage("")
 				.setEmbeds(embed)
 				.queue();
 		}
@@ -37,13 +38,13 @@ public class ResponseCarrier {
 			
 			attachFilesList.add(FileUpload.fromData(resultAttachFile));
 			
-			msgChannel.sendMessage("")
+			channel.sendMessage("")
 				.addFiles(attachFilesList)
 				.queue();
 		}
 	}
 	
-	public void carryErrorToChannel(MessageChannel msgChannel, Exception e, String makerID) {
+	public void carryErrorToChannel(GuildMessageChannel channel, Exception e, String makerID) {
 		String errorMessage = "에러 발생 : " + e.getMessage();
 		log.error(errorMessage);
 		
@@ -52,7 +53,7 @@ public class ResponseCarrier {
 		try {
 			errorView.init(Exception.class);
 			
-			carryResponseToChannel(msgChannel, errorView, makerID);
+			carryResponseToChannel(channel, errorView, makerID);
 		}
 		catch (Exception fatalError) {
 			fatalError.printStackTrace();

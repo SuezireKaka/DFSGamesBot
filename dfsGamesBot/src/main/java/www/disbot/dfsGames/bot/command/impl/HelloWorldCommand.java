@@ -3,7 +3,7 @@ package www.disbot.dfsGames.bot.command.impl;
 import java.util.Map;
 
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
@@ -27,7 +27,7 @@ public class HelloWorldCommand implements Command {
 	}
 	
 	@Override
-	public View command(User user, MessageChannel channel,
+	public View command(User user, GuildMessageChannel channel,
 			Map<String, String> argsMap) throws Exception {
 		if (argsMap.size() != ARGS_NAME_ARRAY.length) {
 			throw new ArgsNumberDismatchException(
