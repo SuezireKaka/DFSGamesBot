@@ -3,6 +3,7 @@ package www.disbot.dfsGames.bot.command;
 import java.util.Map;
 
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import www.disbot.dfsGames.bot.view.View;
 
 public interface Command {
@@ -15,5 +16,6 @@ public interface Command {
 	
 	public String[] getArgsNameArray();
 	
-	public View command(User user, Map<String, String> argsMap) throws Exception;
+	public View command(User user, MessageChannel channel,
+			Map<String, String> argsMap) throws Exception;
 }

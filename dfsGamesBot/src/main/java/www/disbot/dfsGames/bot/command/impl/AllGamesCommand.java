@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import www.disbot.dfsGames.DFSGamesBotApplication;
 import www.disbot.dfsGames.api.framework.model.structure.Page;
 import www.disbot.dfsGames.bot.command.Command;
@@ -35,7 +36,8 @@ public class AllGamesCommand implements Command {
 	}
 	
 	@Override
-	public View command(User user, Map<String, String> argsMap) throws Exception {
+	public View command(User user, MessageChannel channel,
+			Map<String, String> argsMap) throws Exception {
 		if (argsMap.size() != ARGS_NAME_ARRAY.length) {
 			throw new ArgsNumberDismatchException(
 					argsMap.values().toArray(new String[0]),

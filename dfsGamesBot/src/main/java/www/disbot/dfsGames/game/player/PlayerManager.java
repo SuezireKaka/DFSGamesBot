@@ -13,7 +13,9 @@ public class PlayerManager {
 	private int playerIndex;
 	
 	public void join(User user) {
-		playerList.add(user);
+		if (! playerList.contains(user)) {
+			playerList.add(user);
+		}
 	}
 	
 	public void shuffle() {

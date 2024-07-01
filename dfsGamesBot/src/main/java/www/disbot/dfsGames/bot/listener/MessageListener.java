@@ -57,7 +57,9 @@ public class MessageListener extends ListenerAdapter {
 
 		try {
 			View resultView = controller.execute(
-					user, commandKey, commandArgs, asyncMessage, requester);
+					user, msgChannel,
+					commandKey, commandArgs, asyncMessage,
+					requester);
 
 			if (resultView != null) {
 				carrier.carryResponseToChannel(msgChannel, resultView, makerID);
