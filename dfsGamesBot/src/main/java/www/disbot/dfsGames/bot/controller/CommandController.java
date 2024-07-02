@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.command.api.WebClientRequestStrategy;
 import www.disbot.dfsGames.bot.command.impl.AllGamesCommand;
+import www.disbot.dfsGames.bot.command.impl.AttendCommand;
 import www.disbot.dfsGames.bot.command.impl.GameInfoCommand;
 import www.disbot.dfsGames.bot.command.impl.HelloWorldCommand;
 import www.disbot.dfsGames.bot.command.impl.LaunchCommand;
@@ -62,6 +63,16 @@ public class CommandController {
 
         	result = new GameInfoCommand().command(user, channel, packedArgs);
         	result.init(GameInfoCommand.class);
+        }
+		
+		else if (key.equalsIgnoreCase(AttendCommand.COMMAND)
+        		&& args.length == new AttendCommand().getArgsNameArray().length) {
+			
+        	packedArgs = new ArgsPacker<AttendCommand>()
+                	.mapPack(new AttendCommand(), args);
+
+        	result = new AttendCommand().command(user, channel, packedArgs);
+        	result.init(AttendCommand.class);
         }
 		
 		else if (key.equalsIgnoreCase(LaunchCommand.COMMAND)

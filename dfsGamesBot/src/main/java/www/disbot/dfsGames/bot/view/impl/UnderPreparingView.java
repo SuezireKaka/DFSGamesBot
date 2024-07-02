@@ -26,6 +26,8 @@ public class UnderPreparingView extends DiscordView {
 	
 	public static final String PREPAIR_ALARM = "일해라 제작자: ";
 	
+	public static final String DEFAULT_MESSAGE = "해당 기능은 아직 구현중이에요.";
+	
 	@NonNull
 	private String msg;
 	

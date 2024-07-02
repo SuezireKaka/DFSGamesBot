@@ -65,6 +65,7 @@ public class MessageListener extends ListenerAdapter {
 				carrier.carryResponseToChannel(msgChannel, resultView, makerID);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			carrier.carryErrorToChannel(msgChannel, e, makerID);
 		}
 

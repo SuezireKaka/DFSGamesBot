@@ -3,11 +3,14 @@ package www.disbot.dfsGames.bot.command.impl;
 import java.util.Map;
 
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.concrete.ThreadChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.bot.command.Command;
+import www.disbot.dfsGames.bot.command.impl.attend.UserNumberChecker;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
 import www.disbot.dfsGames.bot.view.View;
+import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
 
 public class AttendCommand implements Command {
 	public static final String COMMAND = Command.PREFIX + "attend";
@@ -35,6 +38,19 @@ public class AttendCommand implements Command {
 		
 		int userNum = Integer.valueOf(numString);
 		
-		channel
+		UserNumberChecker checker = new UserNumberChecker(channel);
+		
+		int minNum = checker.minWithPlayableNumber(userNum);
+		
+		int compare;
+		
+		try {
+			compare = ((ThreadChannel) channel).getMemberCount();
+		}
+		catch (Exception e) {
+			compare = channel.getGuild().getMemberCount();
+		}
+		
+		return new UnderPreparingView(UnderPreparingView.DEFAULT_MESSAGE);
 	}
 }
