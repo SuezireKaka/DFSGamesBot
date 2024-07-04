@@ -16,7 +16,7 @@ public class UserNumberChecker {
 	
 	public int minWithPlayableNumber(int criterion) {
 		return Math.min(criterion,
-				getMembersList(member -> member.getUser().isBot())
+				getMembersList(member -> ! member.getUser().isBot())
 				.size());
 	}
 	
@@ -25,7 +25,7 @@ public class UserNumberChecker {
 		
 		try {
 			result = ((ThreadChannel) channel)
-					.getThreadMembers()
+					.retrieveThreadMembers()
 					.stream()
 					.map(ThreadMember::getMember)
 					.collect(Collectors.toList());
