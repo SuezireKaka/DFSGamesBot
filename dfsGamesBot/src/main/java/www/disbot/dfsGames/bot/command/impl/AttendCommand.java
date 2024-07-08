@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.command.impl.attend.UserNumberChecker;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
+import www.disbot.dfsGames.bot.controller.args.AttendManager;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
@@ -42,7 +43,11 @@ public class AttendCommand implements Command {
 		
 		checker.isPlayable(userNum);
 		
+		if (! AttendManager.isOpen(channel)) {
+			AttendManager.openTo(channel, userNum);
+		}
 		
+		AttendManager.join(channel, user);
 		
 		return new UnderPreparingView(UnderPreparingView.DEFAULT_MESSAGE);
 	}
