@@ -1,4 +1,4 @@
-package www.disbot.dfsGames.bot.command.impl.idChecker;
+package www.disbot.dfsGames.bot.command.api.idChecker;
 
 import java.util.Arrays;
 import java.util.List;

@@ -40,16 +40,9 @@ public class AttendCommand implements Command {
 		
 		UserNumberChecker checker = new UserNumberChecker(channel);
 		
-		int minNum = checker.minWithPlayableNumber(userNum);
+		checker.isPlayable(userNum);
 		
-		int compare;
 		
-		try {
-			compare = ((ThreadChannel) channel).getMemberCount();
-		}
-		catch (Exception e) {
-			compare = channel.getGuild().getMemberCount();
-		}
 		
 		return new UnderPreparingView(UnderPreparingView.DEFAULT_MESSAGE);
 	}
