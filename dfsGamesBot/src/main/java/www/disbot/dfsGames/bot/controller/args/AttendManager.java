@@ -17,6 +17,11 @@ public abstract class AttendManager {
 		return attendChannelState.containsKey(channel);
 	}
 	
+	public static boolean isFull(MessageChannel channel) {
+		return attendChannelState.get(channel)
+				.isFull();
+	}
+	
 	public static void openTo(MessageChannel channel, int userNum) throws Exception {
 		if (attendChannelState.containsKey(channel)) {
 			throw new AlreadyOpenChannelException(channel);

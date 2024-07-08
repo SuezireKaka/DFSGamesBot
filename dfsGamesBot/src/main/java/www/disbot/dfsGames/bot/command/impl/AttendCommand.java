@@ -49,6 +49,10 @@ public class AttendCommand implements Command {
 		
 		AttendManager.join(channel, user);
 		
+		if (AttendManager.isFull(channel)) {
+			AttendManager.close(channel);
+		}
+		
 		return new UnderPreparingView(UnderPreparingView.DEFAULT_MESSAGE);
 	}
 }

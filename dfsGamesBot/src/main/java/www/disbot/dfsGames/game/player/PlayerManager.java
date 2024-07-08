@@ -30,6 +30,10 @@ public class PlayerManager {
 		playerList.add(user);
 	}
 	
+	public boolean isFull() {
+		return playerList.size() >= maxNum;
+	}
+	
 	public void shuffle() {
 		Collections.shuffle(playerList);
 	}
