@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import www.disbot.dfsGames.bot.exception.AlreadyOpenChannelException;
 import www.disbot.dfsGames.bot.exception.UnbookedChannelException;
+import www.disbot.dfsGames.bot.model.data.CurrentUserStatusVO;
 import www.disbot.dfsGames.game.player.PlayerManager;
 
 public abstract class AttendManager {
@@ -44,5 +46,19 @@ public abstract class AttendManager {
 		}
 		
 		attendChannelState.get(channel).join(user);
+	}
+
+	public static CurrentUserStatusVO calcStatus(GuildMessageChannel channel) {
+		PlayerManager manager = attendChannelState.get(channel);
+		
+		CurrentUserStatusVO result = new CurrentUserStatusVO(
+				manager.getPlayerList().size(), manager.getMaxNum());
+		
+		result.setMessage(isFull(channel)
+				? CurrentUserStatusVO.FULL_MESSAGE
+				: CurrentUserStatusVO.REQUIRE_MESSAGE);
+		
+		return result;
+
 	}
 }
