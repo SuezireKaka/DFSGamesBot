@@ -6,7 +6,9 @@ import java.util.Map;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
+import www.disbot.dfsGames.DFSGamesBotApplication;
 import www.disbot.dfsGames.bot.exception.AlreadyOpenChannelException;
+import www.disbot.dfsGames.bot.exception.NotMakerException;
 import www.disbot.dfsGames.bot.exception.UnbookedChannelException;
 import www.disbot.dfsGames.bot.model.data.CurrentUserStatusVO;
 import www.disbot.dfsGames.game.player.PlayerManager;
@@ -24,15 +26,31 @@ public abstract class AttendManager {
 				.isFull();
 	}
 	
-	public static void openTo(MessageChannel channel, int userNum) throws Exception {
+	public static void openTo(MessageChannel channel, int userNum, User user) throws Exception {
 		if (attendChannelState.containsKey(channel)) {
 			throw new AlreadyOpenChannelException(channel);
 		}
 		
-		attendChannelState.put(channel, new PlayerManager(userNum, channel));
+		attendChannelState.put(channel,
+				new PlayerManager(userNum, channel, user));
 	}
 	
-	public static void close(MessageChannel channel) throws Exception {
+	public static void close(MessageChannel channel, User user) throws Exception {
+		if (! attendChannelState.containsKey(channel)) {
+			throw new UnbookedChannelException(channel);
+		}
+		
+		User maker = attendChannelState.get(channel).getMaker();
+		
+		if (user != maker &&  ! user.getId().equals(
+				DFSGamesBotApplication.callMaker().getId())) {
+			throw new NotMakerException(channel);
+		}
+		
+		attendChannelState.remove(channel);
+	}
+	
+	public static void forceClose(MessageChannel channel) throws Exception {
 		if (! attendChannelState.containsKey(channel)) {
 			throw new UnbookedChannelException(channel);
 		}

@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import www.disbot.dfsGames.bot.listener.MessageListener;
 import www.disbot.dfsGames.sys.context.ApiRequestInfo;
@@ -31,6 +32,12 @@ public class DFSGamesBotApplication {
 	
 	public static JDA callJda() {
 		return jda;
+	}
+	
+	public static ISnowflake callMaker() {
+		return jda.getUserById(
+				context.getBean(MakerDiscordID.class)
+					.getMakerDiscordID());
 	}
 	
 	public static WebClient callWebClient() {

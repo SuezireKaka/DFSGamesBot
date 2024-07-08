@@ -13,10 +13,12 @@ import www.disbot.dfsGames.bot.exception.AlreadyJoinedUserException;
 public class PlayerManager {
 	private int maxNum;
 	private MessageChannel channel;
+	private User maker;
 	
-	public PlayerManager(int maxNum, MessageChannel channel) {
+	public PlayerManager(int maxNum, MessageChannel channel, User maker) {
 		this.maxNum = maxNum;
 		this.channel = channel;
+		this.maker = maker;
 	}
 	
 	private List<User> playerList = new ArrayList<>();
