@@ -7,9 +7,9 @@ import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
-import www.disbot.dfsGames.bot.model.data.HelloWorldVO;
+import www.disbot.dfsGames.bot.model.data.SimpleMessageVO;
 import www.disbot.dfsGames.bot.parser.DiscordContents;
-import www.disbot.dfsGames.bot.parser.impl.HelloWorldParser;
+import www.disbot.dfsGames.bot.parser.impl.SimpleMessageParser;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.CommandResultView;
 
@@ -35,9 +35,9 @@ public class HelloWorldCommand implements Command {
 					ARGS_NAME_ARRAY);
 		}
 		
-		HelloWorldVO result = new HelloWorldVO("Hello, world!");
+		SimpleMessageVO result = new SimpleMessageVO("Hello, world!");
 		
-		DiscordContents contents = new DiscordContents(new HelloWorldParser(result));
+		DiscordContents contents = new DiscordContents(new SimpleMessageParser(result));
 	   	
 		contents.parse();
 		

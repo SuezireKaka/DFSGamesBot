@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
-import www.disbot.dfsGames.bot.model.data.HelloWorldVO;
+import www.disbot.dfsGames.bot.model.data.SimpleMessageVO;
 import www.disbot.dfsGames.bot.model.structure.Pair;
 import www.disbot.dfsGames.bot.parser.DiscordParser;
 
 @AllArgsConstructor
-public class HelloWorldParser extends DiscordParser {
-	private HelloWorldVO vo;
+public class SimpleMessageParser extends DiscordParser {
+	private SimpleMessageVO vo;
 	
 	@Override
 	public List<Pair<ParseType, String>> parseLemma() {

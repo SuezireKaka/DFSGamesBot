@@ -9,6 +9,6 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 @EqualsAndHashCode
-public class HelloWorldVO {
+public class SimpleMessageVO {
 	private String message;
 }
