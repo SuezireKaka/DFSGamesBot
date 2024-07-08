@@ -35,19 +35,23 @@ public abstract class AttendManager {
 				new PlayerManager(userNum, channel, user));
 	}
 	
-	public static void close(MessageChannel channel, User user) throws Exception {
+	public static String close(MessageChannel channel, User user) throws Exception {
 		if (! attendChannelState.containsKey(channel)) {
 			throw new UnbookedChannelException(channel);
 		}
 		
 		User maker = attendChannelState.get(channel).getMaker();
 		
-		if (user != maker &&  ! user.getId().equals(
+		if (user != maker && ! user.getId().equals(
 				DFSGamesBotApplication.callMaker().getId())) {
 			throw new NotMakerException(channel);
 		}
 		
 		attendChannelState.remove(channel);
+		
+		return user.equals(maker)
+				? "성공적으로"
+				: "봇 제작자에 의해";
 	}
 	
 	public static void forceClose(MessageChannel channel) throws Exception {

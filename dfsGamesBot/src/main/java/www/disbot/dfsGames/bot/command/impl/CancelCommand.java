@@ -8,15 +8,15 @@ import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.controller.args.AttendManager;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
-import www.disbot.dfsGames.bot.model.data.CurrentUserStatusVO;
+import www.disbot.dfsGames.bot.model.data.SimpleMessageVO;
 import www.disbot.dfsGames.bot.parser.DiscordContents;
-import www.disbot.dfsGames.bot.parser.impl.CurrentUserStatusParser;
+import www.disbot.dfsGames.bot.parser.impl.SimpleMessageParser;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.CommandResultView;
 
 public class CancelCommand implements Command {
 	public static final String COMMAND = Command.PREFIX + "cancel";
-	public static final String EXPLAIN = "유저가 다 모집되지 않았을 때 취소해요";
+	public static final String EXPLAIN = "주최자 또는 제작자가 자신이 연 모임을 취소해요";
 	
 	private static final String[] ARGS_NAME_ARRAY = new String[]{};
 	
@@ -36,19 +36,15 @@ public class CancelCommand implements Command {
 					ARGS_NAME_ARRAY);
 		}
 		
-		AttendManager.close(channel, user);
+		String message = AttendManager.close(channel, user);
 		
-		CurrentUserStatusVO result = AttendManager.calcStatus(channel);
+		SimpleMessageVO result = new SimpleMessageVO(message + " 취소되었습니다.");
 		
-		if (AttendManager.isFull(channel)) {
-			AttendManager.close(channel, user);
-		}
-		
-		DiscordContents contents = new DiscordContents(new CurrentUserStatusParser(result));
+		DiscordContents contents = new DiscordContents(new SimpleMessageParser(result));
 	   	
 		contents.parse();
 		
-		return CommandResultView.builder()
+	   	return CommandResultView.builder()
 	   			.title(USAGE)
 	   			.contents(contents)
 	   			.build();

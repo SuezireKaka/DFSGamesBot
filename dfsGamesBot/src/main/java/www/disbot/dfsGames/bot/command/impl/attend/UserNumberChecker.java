@@ -3,6 +3,7 @@ package www.disbot.dfsGames.bot.command.impl.attend;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.entities.Member;
@@ -27,20 +28,19 @@ public class UserNumberChecker {
 	}
 	
 	private List<Member> getMembersList(Predicate<? super Member> predicate) {
-		List<Member> result;
+		Stream<Member> memberStream;
 		
 		try {
-			result = ((ThreadChannel) channel)
+			memberStream = ((ThreadChannel) channel)
 					.retrieveThreadMembers()
 					.stream()
-					.map(ThreadMember::getMember)
-					.collect(Collectors.toList());
+					.map(ThreadMember::getMember);
 		}
 		catch (ClassCastException e) {
-			result = channel.getGuild().getMembers();
+			memberStream = channel.getGuild().getMembers().stream();
 		}
 		
-		return result.stream()
+		return memberStream
 				.filter(predicate)
 				.collect(Collectors.toList());
 	}

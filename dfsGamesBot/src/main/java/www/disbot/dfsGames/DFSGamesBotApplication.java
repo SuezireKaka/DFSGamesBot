@@ -14,6 +14,8 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.ISnowflake;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import www.disbot.dfsGames.bot.listener.MessageListener;
 import www.disbot.dfsGames.sys.context.ApiRequestInfo;
 import www.disbot.dfsGames.sys.context.DiscordBotToken;
@@ -58,7 +60,9 @@ public class DFSGamesBotApplication {
 		String makerDiscordID = makerDiscordIDEntity.getMakerDiscordID();
 
 		jda = JDABuilder.createDefault(discordBotToken).setActivity(Activity.playing("자바로 동작"))
-				.enableIntents(GatewayIntent.MESSAGE_CONTENT)
+				.enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS)
+				.setChunkingFilter(ChunkingFilter.ALL)
+                .setMemberCachePolicy(MemberCachePolicy.ALL)
 				.addEventListeners(
 						new MessageListener(makerDiscordID))
 				.build();
