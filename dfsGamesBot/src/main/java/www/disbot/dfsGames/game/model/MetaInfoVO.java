@@ -15,4 +15,8 @@ public class MetaInfoVO {
 	private String introduce;
 	
 	private File gameFile;
+	
+	public GameVO launchGame() throws Exception {
+		return new GameVO(gameFile);
+	}
 }

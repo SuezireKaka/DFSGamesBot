@@ -5,6 +5,8 @@ import java.util.List;
 import www.disbot.dfsGames.bot.model.structure.Pair;
 
 public interface Graph<V> {
+	public int size();
+	
 	public boolean isAllConnected();
 	
 	public void addEdge(Pair<V, V> edge);

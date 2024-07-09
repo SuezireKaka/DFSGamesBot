@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 public class Visitor<V> {
-	private V nowPosition;
+	private V nowPosition = null;
 	private List<V> visitedVerticesList = new ArrayList<>();
 	
 	public boolean hasVisited(V vertex) {

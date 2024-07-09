@@ -9,6 +9,11 @@ import www.disbot.dfsGames.bot.model.structure.Pair;
 
 public class AdjacencyMapGraph<V> implements Graph<V> {
 	private Map<V, List<V>> adjacencyMap = new HashMap<>();
+	
+	@Override
+	public int size() {
+		return adjacencyMap.size();
+	}
 
 	@Override
 	public boolean isAllConnected() {
