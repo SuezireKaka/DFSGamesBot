@@ -7,13 +7,15 @@ import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.command.impl.attend.UserNumberChecker;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
-import www.disbot.dfsGames.bot.controller.args.AttendManager;
+import www.disbot.dfsGames.bot.exception.AlreadyOpenChannelException;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
 import www.disbot.dfsGames.bot.model.data.CurrentUserStatusVO;
 import www.disbot.dfsGames.bot.parser.DiscordContents;
 import www.disbot.dfsGames.bot.parser.impl.CurrentUserStatusParser;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.CommandResultView;
+import www.disbot.dfsGames.game.promise.PromiseManager;
+import www.disbot.dfsGames.game.promise.PromiseType;
 
 public class AttendCommand implements Command {
 	public static final String COMMAND = Command.PREFIX + "attend";
@@ -44,16 +46,17 @@ public class AttendCommand implements Command {
 		UserNumberChecker checker = new UserNumberChecker(channel);
 		checker.isPlayable(userNum);
 		
-		if (! AttendManager.isOpen(channel)) {
-			AttendManager.openTo(channel, userNum, user);
+		if (PromiseManager.isOpen(channel)) {
+			throw new AlreadyOpenChannelException(channel);
 		}
 		
-		AttendManager.join(channel, user);
+		PromiseManager.openTo(channel, userNum, user, PromiseType.ATTEND);
+		PromiseManager.join(channel, user);
 		
-		CurrentUserStatusVO result = AttendManager.calcStatus(channel);
+		CurrentUserStatusVO result = PromiseManager.calcStatus(channel);
 		
-		if (AttendManager.isFull(channel)) {
-			AttendManager.forceClose(channel);
+		if (PromiseManager.isFull(channel)) {
+			PromiseManager.forceClose(channel);
 		}
 		
 		DiscordContents contents = new DiscordContents(new CurrentUserStatusParser(result));

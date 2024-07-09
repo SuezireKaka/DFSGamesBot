@@ -1,4 +1,4 @@
-package www.disbot.dfsGames.bot.controller.args;
+package www.disbot.dfsGames.game.promise;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,16 +7,14 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import www.disbot.dfsGames.DFSGamesBotApplication;
-import www.disbot.dfsGames.bot.exception.AlreadyOpenChannelException;
 import www.disbot.dfsGames.bot.exception.NotMakerException;
 import www.disbot.dfsGames.bot.exception.UnbookedChannelException;
 import www.disbot.dfsGames.bot.model.data.CurrentUserStatusVO;
-import www.disbot.dfsGames.bot.model.structure.Pair;
 import www.disbot.dfsGames.game.model.GameVO;
 import www.disbot.dfsGames.game.player.PlayerManager;
 
-public abstract class AttendManager {
-	private static final Map<MessageChannel, Pair<PlayerManager, GameVO>> attendChannelState =
+public abstract class PromiseManager {
+	private static final Map<MessageChannel, PromisePoint> attendChannelState =
 			new HashMap<>();
 	
 	public static boolean isOpen(MessageChannel channel) {
@@ -24,17 +22,19 @@ public abstract class AttendManager {
 	}
 	
 	public static boolean isFull(MessageChannel channel) {
-		return attendChannelState.get(channel).getFirst()
+		return attendChannelState.get(channel).getManager()
 				.isFull();
 	}
 	
-	public static void openTo(MessageChannel channel, int userNum, User user) {
-		attendChannelState.put(channel,
-				new Pair<>(new PlayerManager(userNum, channel, user), null));
+	public static void openTo(MessageChannel channel,
+			int userNum, User user, PromiseType type) {
+		
+		attendChannelState.put(channel, new PromisePoint(
+				type, new PlayerManager(userNum, channel, user)));
 	}
 	
 	public static void launchGameTo(MessageChannel channel, GameVO game) {
-		attendChannelState.get(channel).setSecond(game);
+		attendChannelState.get(channel).setGame(game);
 	}
 	
 	public static String close(MessageChannel channel, User user)
@@ -44,7 +44,7 @@ public abstract class AttendManager {
 			throw new UnbookedChannelException(channel);
 		}
 		
-		User maker = attendChannelState.get(channel).getFirst().getMaker();
+		User maker = attendChannelState.get(channel).getManager().getMaker();
 		
 		if (user != maker && ! user.getId().equals(
 				DFSGamesBotApplication.callMaker().getId())) {
@@ -75,11 +75,11 @@ public abstract class AttendManager {
 			throw new UnbookedChannelException(channel);
 		}
 		
-		attendChannelState.get(channel).getFirst().join(user);
+		attendChannelState.get(channel).getManager().join(user);
 	}
 
 	public static CurrentUserStatusVO calcStatus(GuildMessageChannel channel) {
-		PlayerManager manager = attendChannelState.get(channel).getFirst();
+		PlayerManager manager = attendChannelState.get(channel).getManager();
 		
 		CurrentUserStatusVO result = new CurrentUserStatusVO(
 				manager.getPlayerList().size(), manager.getMaxNum());

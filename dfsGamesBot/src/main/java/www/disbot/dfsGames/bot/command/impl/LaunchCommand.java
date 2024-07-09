@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.command.impl.attend.UserNumberChecker;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
-import www.disbot.dfsGames.bot.controller.args.AttendManager;
 import www.disbot.dfsGames.bot.exception.AlreadyOpenChannelException;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
 import www.disbot.dfsGames.bot.exception.NoGameFoundException;
@@ -18,6 +17,8 @@ import www.disbot.dfsGames.bot.view.impl.CommandResultView;
 import www.disbot.dfsGames.game.model.GameVO;
 import www.disbot.dfsGames.game.model.LaunchVO;
 import www.disbot.dfsGames.game.model.MetaInfoVO;
+import www.disbot.dfsGames.game.promise.PromiseManager;
+import www.disbot.dfsGames.game.promise.PromiseType;
 import www.disbot.dfsGames.game.search.GameFileManager;
 
 public class LaunchCommand implements Command {
@@ -52,15 +53,14 @@ public class LaunchCommand implements Command {
 		UserNumberChecker checker = new UserNumberChecker(channel);
 		checker.isPlayable(game, playerNum);
 		
-		if (AttendManager.isOpen(channel)) {
+		if (PromiseManager.isOpen(channel)) {
 			throw new AlreadyOpenChannelException(channel);
 		}
 		
-		AttendManager.openTo(channel, playerNum, user);
+		PromiseManager.openTo(channel, playerNum, user, PromiseType.LAUNCH);
+		PromiseManager.join(channel, user);
 		
-		AttendManager.join(channel, user);
-		
-		LaunchVO result = new LaunchVO(game, AttendManager.calcStatus(channel));
+		LaunchVO result = new LaunchVO(game, PromiseManager.calcStatus(channel));
 		
 		DiscordContents contents = new DiscordContents(new LaunchParser(result));
 	   	

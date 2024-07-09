@@ -6,13 +6,13 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
-import www.disbot.dfsGames.bot.controller.args.AttendManager;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
 import www.disbot.dfsGames.bot.model.data.SimpleMessageVO;
 import www.disbot.dfsGames.bot.parser.DiscordContents;
 import www.disbot.dfsGames.bot.parser.impl.SimpleMessageParser;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.CommandResultView;
+import www.disbot.dfsGames.game.promise.PromiseManager;
 
 public class CancelCommand implements Command {
 	public static final String COMMAND = Command.PREFIX + "cancel";
@@ -36,7 +36,7 @@ public class CancelCommand implements Command {
 					ARGS_NAME_ARRAY);
 		}
 		
-		String message = AttendManager.close(channel, user);
+		String message = PromiseManager.close(channel, user);
 		
 		SimpleMessageVO result = new SimpleMessageVO(message + " 취소되었습니다.");
 		
