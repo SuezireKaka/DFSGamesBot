@@ -57,7 +57,7 @@ public class CommandController {
         }
 		
 		else if (key.equalsIgnoreCase(GameInfoCommand.COMMAND)
-        		&& args.length == new LaunchCommand().getArgsNameArray().length) {
+        		&& args.length == new GameInfoCommand().getArgsNameArray().length) {
 			
         	packedArgs = new ArgsPacker<GameInfoCommand>()
                 	.mapPack(new GameInfoCommand(), args);

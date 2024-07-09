@@ -17,6 +17,6 @@ public class MetaInfoVO {
 	private File gameFile;
 	
 	public GameVO launchGame() throws Exception {
-		return new GameVO(gameFile);
+		return new GameVO(name, gameFile);
 	}
 }

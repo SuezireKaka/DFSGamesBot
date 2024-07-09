@@ -3,11 +3,8 @@ package www.disbot.dfsGames.game.model;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
 
 import lombok.Getter;
-import net.dv8tion.jda.api.entities.User;
 import www.disbot.dfsGames.bot.model.structure.Pair;
 import www.disbot.dfsGames.game.graph.AdjacencyMapGraph;
 import www.disbot.dfsGames.game.graph.Graph;
@@ -15,8 +12,8 @@ import www.disbot.dfsGames.game.visitor.Visitor;
 
 @Getter
 public class GameVO {
-	public static final String DATA_SEPERATOR = "\n\n";
-	public static final String EDGE_SEPERATOR = "\n";
+	public static final String DATA_SEPERATOR = "\r\n\r\n";
+	public static final String EDGE_SEPERATOR = "\r\n";
 	public static final String VERTEX_SEPERATOR = ",";
 	
 	private String name;
@@ -24,8 +21,8 @@ public class GameVO {
 	private Visitor<String> visitor = new Visitor<>();
 	private Graph<String> background = new AdjacencyMapGraph<>();
 	
-	public GameVO(File gameFile) throws IOException {
-		this.name = gameFile.getName();
+	public GameVO(String name, File gameFile) throws IOException {
+		this.name = name;
 		
 		// 게임 csv 참조
 		String[] gameData = Files.readString(gameFile.toPath())

@@ -14,7 +14,7 @@ import www.disbot.dfsGames.bot.exception.NoGameFoundException;
 import www.disbot.dfsGames.bot.parser.DiscordContents;
 import www.disbot.dfsGames.bot.parser.impl.LaunchParser;
 import www.disbot.dfsGames.bot.view.View;
-import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
+import www.disbot.dfsGames.bot.view.impl.CommandResultView;
 import www.disbot.dfsGames.game.model.GameVO;
 import www.disbot.dfsGames.game.model.LaunchVO;
 import www.disbot.dfsGames.game.model.MetaInfoVO;
@@ -66,7 +66,10 @@ public class LaunchCommand implements Command {
 	   	
 		contents.parse();
 		
-	   	return new UnderPreparingView("금방 만들겠습니다 제성합니다");
+		return CommandResultView.builder()
+	   			.title(USAGE)
+	   			.contents(contents)
+	   			.build();
 	}
 
 	private GameVO gameSetup(String gameName) throws Exception, NoGameFoundException {
