@@ -42,7 +42,6 @@ public class AttendCommand implements Command {
 		int userNum = Integer.valueOf(numString);
 		
 		UserNumberChecker checker = new UserNumberChecker(channel);
-		
 		checker.isPlayable(userNum);
 		
 		if (! AttendManager.isOpen(channel)) {

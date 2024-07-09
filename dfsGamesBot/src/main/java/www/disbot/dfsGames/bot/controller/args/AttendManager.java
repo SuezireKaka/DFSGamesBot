@@ -11,10 +11,12 @@ import www.disbot.dfsGames.bot.exception.AlreadyOpenChannelException;
 import www.disbot.dfsGames.bot.exception.NotMakerException;
 import www.disbot.dfsGames.bot.exception.UnbookedChannelException;
 import www.disbot.dfsGames.bot.model.data.CurrentUserStatusVO;
+import www.disbot.dfsGames.bot.model.structure.Pair;
+import www.disbot.dfsGames.game.model.GameVO;
 import www.disbot.dfsGames.game.player.PlayerManager;
 
 public abstract class AttendManager {
-	private static final Map<MessageChannel, PlayerManager> attendChannelState =
+	private static final Map<MessageChannel, Pair<PlayerManager, GameVO>> attendChannelState =
 			new HashMap<>();
 	
 	public static boolean isOpen(MessageChannel channel) {
@@ -22,25 +24,27 @@ public abstract class AttendManager {
 	}
 	
 	public static boolean isFull(MessageChannel channel) {
-		return attendChannelState.get(channel)
+		return attendChannelState.get(channel).getFirst()
 				.isFull();
 	}
 	
-	public static void openTo(MessageChannel channel, int userNum, User user) throws Exception {
-		if (attendChannelState.containsKey(channel)) {
-			throw new AlreadyOpenChannelException(channel);
-		}
-		
+	public static void openTo(MessageChannel channel, int userNum, User user) {
 		attendChannelState.put(channel,
-				new PlayerManager(userNum, channel, user));
+				new Pair<>(new PlayerManager(userNum, channel, user), null));
 	}
 	
-	public static String close(MessageChannel channel, User user) throws Exception {
+	public static void launchGameTo(MessageChannel channel, GameVO game) {
+		attendChannelState.get(channel).setSecond(game);
+	}
+	
+	public static String close(MessageChannel channel, User user)
+			throws Exception {
+		
 		if (! attendChannelState.containsKey(channel)) {
 			throw new UnbookedChannelException(channel);
 		}
 		
-		User maker = attendChannelState.get(channel).getMaker();
+		User maker = attendChannelState.get(channel).getFirst().getMaker();
 		
 		if (user != maker && ! user.getId().equals(
 				DFSGamesBotApplication.callMaker().getId())) {
@@ -54,7 +58,9 @@ public abstract class AttendManager {
 				: "봇 제작자에 의해";
 	}
 	
-	public static void forceClose(MessageChannel channel) throws Exception {
+	public static void forceClose(MessageChannel channel)
+			throws Exception {
+		
 		if (! attendChannelState.containsKey(channel)) {
 			throw new UnbookedChannelException(channel);
 		}
@@ -62,16 +68,18 @@ public abstract class AttendManager {
 		attendChannelState.remove(channel);
 	}
 
-	public static void join(MessageChannel channel, User user) throws Exception {
+	public static void join(MessageChannel channel, User user)
+			throws Exception {
+		
 		if (! attendChannelState.containsKey(channel)) {
 			throw new UnbookedChannelException(channel);
 		}
 		
-		attendChannelState.get(channel).join(user);
+		attendChannelState.get(channel).getFirst().join(user);
 	}
 
 	public static CurrentUserStatusVO calcStatus(GuildMessageChannel channel) {
-		PlayerManager manager = attendChannelState.get(channel);
+		PlayerManager manager = attendChannelState.get(channel).getFirst();
 		
 		CurrentUserStatusVO result = new CurrentUserStatusVO(
 				manager.getPlayerList().size(), manager.getMaxNum());
