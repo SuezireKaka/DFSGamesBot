@@ -51,10 +51,12 @@ public class JoinCommand implements Command {
 		
 		if (PromiseManager.isFull(channel)) {
 			if (PromiseManager.isAttendType(channel)) {
+				
 				PromiseManager.forceClose(channel);
 			}
 			else {
 				PromiseManager.startGame(channel);
+				result = PromiseManager.calcStatus(channel);
 			}
 		}
 		

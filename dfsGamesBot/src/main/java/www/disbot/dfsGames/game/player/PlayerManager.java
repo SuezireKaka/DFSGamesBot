@@ -45,4 +45,11 @@ public class PlayerManager {
 		
 		return playerList.get(playerIndex);
 	}
+
+	public String getPlayerOrder() {
+		return playerList.stream()
+				.map(User::getAsMention)
+				.reduce((f, s) -> f + s)
+				.get();
+	}
 }

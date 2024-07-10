@@ -34,6 +34,10 @@ public abstract class PromiseManager {
 	}
 	
 	public static boolean isAttendType(GuildMessageChannel channel) {
+		if (! isOpen(channel)) {
+			return true;
+		}
+		
 		PromiseType type = attendChannelState.get(channel).getType();
 		return type == PromiseType.ATTEND;
 	}
@@ -113,15 +117,19 @@ public abstract class PromiseManager {
 		
 		CurrentUserStatusVO result = isAttendType(channel)
 				? new CurrentUserStatusVO(message, playerNum, maxNum)
-				: new LaunchVO(message, playerNum, maxNum, game);
+				: new LaunchVO(message, playerNum, maxNum, game, manager);
 		
 		return result;
 
 	}
 
 	public static void startGame(GuildMessageChannel channel) {
-		GameVO game = attendChannelState.get(channel).getGame();
+		PromisePoint promise = attendChannelState.get(channel);
 		
+		PlayerManager manager = promise.getManager();
+		GameVO game = promise.getGame();
+		
+		manager.shuffle();
 		game.start();
 	}
 }
