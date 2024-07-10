@@ -64,6 +64,10 @@ public class LaunchCommand implements Command {
 		
 		LaunchVO result = (LaunchVO) PromiseManager.calcStatus(channel);
 		
+		if (PromiseManager.isFull(channel)) {
+			PromiseManager.startGame(channel);
+		}
+		
 		DiscordContents contents = new DiscordContents(new LaunchParser(result));
 	   	
 		contents.parse();
