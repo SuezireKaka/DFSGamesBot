@@ -1,5 +1,6 @@
 package www.disbot.dfsGames.bot.parser.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import lombok.AllArgsConstructor;
 import www.disbot.dfsGames.bot.model.data.CurrentUserStatusVO;
 import www.disbot.dfsGames.bot.model.structure.Pair;
 import www.disbot.dfsGames.bot.parser.DiscordParser;
+import www.disbot.dfsGames.game.model.GameVO;
 import www.disbot.dfsGames.game.model.LaunchVO;
 
 @AllArgsConstructor
@@ -46,5 +48,14 @@ public class LaunchParser extends DiscordParser {
 		lemma.add(statusVal);
 
 		return lemma;
+	}
+	
+	@Override
+	public File extractFile() {
+		GameVO game = vo.getGame();
+		
+		return game != null && game.isStarted()
+				? game.getGameFile()
+				:null;
 	}
 }

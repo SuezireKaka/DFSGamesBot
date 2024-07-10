@@ -18,6 +18,8 @@ public class GameVO {
 	
 	private boolean isStarted = false;
 	
+	private File gameFile;
+	
 	private String name;
 	private String description;
 	private Visitor<String> visitor = new Visitor<>();
@@ -25,6 +27,7 @@ public class GameVO {
 	
 	public GameVO(String name, File gameFile) throws IOException {
 		this.name = name;
+		this.gameFile = gameFile;
 		
 		// 게임 csv 참조
 		String[] gameData = Files.readString(gameFile.toPath())
