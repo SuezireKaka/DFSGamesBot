@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Builder
@@ -18,14 +17,8 @@ public class CurrentUserStatusVO {
 	public static final String STATUS_TITLE = "status";
 	public static final String STATUS_FORMAT = "%d / %d";
 	
-	@Setter
 	private String message;
 	
 	private int nowNumber;
 	private int requiredNumber;
-	
-	public CurrentUserStatusVO(int nowNumber, int requiredNumber) {
-		this.nowNumber = nowNumber;
-		this.requiredNumber = requiredNumber;
-	}
 }

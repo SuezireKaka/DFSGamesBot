@@ -94,13 +94,15 @@ public abstract class PromiseManager {
 		int playerNum = manager.getPlayerList().size();
 		int maxNum = manager.getMaxNum();
 		
-		CurrentUserStatusVO result = type == PromiseType.ATTEND
-				? new CurrentUserStatusVO(playerNum, maxNum)
-				: new LaunchVO(playerNum, maxNum, game);
+		String message = isFull(channel)
+				? type == PromiseType.ATTEND
+					? CurrentUserStatusVO.FULL_MESSAGE
+					: LaunchVO.GAME_START_MESSAGE
+				: CurrentUserStatusVO.REQUIRE_MESSAGE;
 		
-		result.setMessage(isFull(channel)
-				? CurrentUserStatusVO.FULL_MESSAGE
-				: CurrentUserStatusVO.REQUIRE_MESSAGE);
+		CurrentUserStatusVO result = type == PromiseType.ATTEND
+				? new CurrentUserStatusVO(message, playerNum, maxNum)
+				: new LaunchVO(message, playerNum, maxNum, game);
 		
 		return result;
 

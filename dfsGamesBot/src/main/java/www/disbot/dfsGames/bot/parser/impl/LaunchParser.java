@@ -18,13 +18,19 @@ public class LaunchParser extends DiscordParser {
 		
 		List<Pair<ParseType, String>> lemma = new ArrayList<>();
 		
-		String messageKeyString = LaunchVO.MESSAGE_TITLE;
+		String launchKeyString = LaunchVO.LAUNCH_TITLE;
+		Pair<ParseType, String> launchKey = new Pair<>(ParseType.KEY, launchKeyString);
+		
+		String launchValString = LaunchVO.LAUNCH_MESSAGE.formatted(
+				vo.getGame().getName());
+		Pair<ParseType, String> launchVal = new Pair<>(ParseType.VAL, launchValString);
+
+		String messageKeyString = CurrentUserStatusVO.MESSAGE_TITLE;
 		Pair<ParseType, String> messageKey = new Pair<>(ParseType.KEY, messageKeyString);
 		
-		String messageValString = LaunchVO.LAUNCH_MESSAGE.formatted(
-				vo.getGame().getName());
+		String messageValString = vo.getMessage();
 		Pair<ParseType, String> messageVal = new Pair<>(ParseType.VAL, messageValString);
-
+		
 		String statusKeyString = CurrentUserStatusVO.STATUS_TITLE;
 		Pair<ParseType, String> statusKey = new Pair<>(ParseType.KEY, statusKeyString);
 		
@@ -32,6 +38,8 @@ public class LaunchParser extends DiscordParser {
 				vo.getNowNumber(), vo.getRequiredNumber());
 		Pair<ParseType, String> statusVal = new Pair<>(ParseType.VAL, statusValString);
 		
+		lemma.add(launchKey);
+		lemma.add(launchVal);
 		lemma.add(messageKey);
 		lemma.add(messageVal);
 		lemma.add(statusKey);
