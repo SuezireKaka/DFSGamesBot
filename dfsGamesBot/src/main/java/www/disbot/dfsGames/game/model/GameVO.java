@@ -49,4 +49,8 @@ public class GameVO {
 	public int calcMaxPlayersNumber() {
 		return background.size();
 	}
+
+	public void start() {
+		this.isStarted = true;
+	}
 }

@@ -16,7 +16,6 @@ import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.CommandResultView;
 import www.disbot.dfsGames.game.model.LaunchVO;
 import www.disbot.dfsGames.game.promise.PromiseManager;
-import www.disbot.dfsGames.game.promise.PromisePoint;
 
 public class JoinCommand implements Command {
 	public static final String COMMAND = Command.PREFIX + "join";
@@ -51,7 +50,12 @@ public class JoinCommand implements Command {
 		CurrentUserStatusVO result = PromiseManager.calcStatus(channel);
 		
 		if (PromiseManager.isFull(channel)) {
-			PromiseManager.forceClose(channel);
+			if (PromiseManager.isAttendType(channel)) {
+				PromiseManager.forceClose(channel);
+			}
+			else {
+				PromiseManager.startGame(channel);
+			}
 		}
 		
 		DiscordContents contents = PromiseManager.isAttendType(channel)

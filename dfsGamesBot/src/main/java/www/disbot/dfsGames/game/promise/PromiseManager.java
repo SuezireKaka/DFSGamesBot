@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import www.disbot.dfsGames.DFSGamesBotApplication;
+import www.disbot.dfsGames.bot.exception.AlreadyStartedGameException;
 import www.disbot.dfsGames.bot.exception.NotMakerException;
 import www.disbot.dfsGames.bot.exception.UnbookedChannelException;
 import www.disbot.dfsGames.bot.model.data.CurrentUserStatusVO;
@@ -25,6 +26,16 @@ public abstract class PromiseManager {
 	public static boolean isFull(MessageChannel channel) {
 		return attendChannelState.get(channel).getManager()
 				.isFull();
+	}
+	
+	public static boolean isStarted(MessageChannel channel) {
+		GameVO game = attendChannelState.get(channel).getGame();
+		return game != null && game.isStarted();
+	}
+	
+	public static boolean isAttendType(GuildMessageChannel channel) {
+		PromiseType type = attendChannelState.get(channel).getType();
+		return type == PromiseType.ATTEND;
 	}
 	
 	public static void openTo(MessageChannel channel,
@@ -66,6 +77,10 @@ public abstract class PromiseManager {
 			throw new UnbookedChannelException(channel);
 		}
 		
+		if (isStarted(channel)) {
+			throw new AlreadyStartedGameException();
+		}
+		
 		PromisePoint point = attendChannelState.get(channel);
 		
 		point.getManager().join(user);
@@ -103,9 +118,10 @@ public abstract class PromiseManager {
 		return result;
 
 	}
-	
-	public static boolean isAttendType(GuildMessageChannel channel) {
-		PromiseType type = attendChannelState.get(channel).getType();
-		return type == PromiseType.ATTEND;
+
+	public static void startGame(GuildMessageChannel channel) {
+		GameVO game = attendChannelState.get(channel).getGame();
+		
+		game.start();
 	}
 }
