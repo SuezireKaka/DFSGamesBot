@@ -17,7 +17,6 @@ import www.disbot.dfsGames.bot.view.impl.CommandResultView;
 import www.disbot.dfsGames.game.model.LaunchVO;
 import www.disbot.dfsGames.game.promise.PromiseManager;
 import www.disbot.dfsGames.game.promise.PromisePoint;
-import www.disbot.dfsGames.game.promise.PromiseType;
 
 public class JoinCommand implements Command {
 	public static final String COMMAND = Command.PREFIX + "join";
@@ -47,7 +46,7 @@ public class JoinCommand implements Command {
 			throw new UnbookedChannelException(channel);
 		}
 		
-		PromisePoint promise = PromiseManager.join(channel, user);
+		PromiseManager.join(channel, user);
 		
 		CurrentUserStatusVO result = PromiseManager.calcStatus(channel);
 		
@@ -55,7 +54,7 @@ public class JoinCommand implements Command {
 			PromiseManager.forceClose(channel);
 		}
 		
-		DiscordContents contents = promise.getType() == PromiseType.ATTEND
+		DiscordContents contents = PromiseManager.isAttendType(channel)
 				? new DiscordContents(new CurrentUserStatusParser(result))
 				: new DiscordContents(new LaunchParser((LaunchVO) result));
 	   	

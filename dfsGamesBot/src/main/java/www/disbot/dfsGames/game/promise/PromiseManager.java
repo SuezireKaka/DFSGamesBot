@@ -59,7 +59,7 @@ public abstract class PromiseManager {
 				: "봇 제작자에 의해";
 	}
 
-	public static PromisePoint join(MessageChannel channel, User user)
+	public static void join(MessageChannel channel, User user)
 			throws Exception {
 		
 		if (! attendChannelState.containsKey(channel)) {
@@ -69,8 +69,6 @@ public abstract class PromiseManager {
 		PromisePoint point = attendChannelState.get(channel);
 		
 		point.getManager().join(user);
-		
-		return point;
 	}
 	
 	public static void forceClose(MessageChannel channel)
@@ -86,8 +84,6 @@ public abstract class PromiseManager {
 	public static CurrentUserStatusVO calcStatus(GuildMessageChannel channel) {
 		PromisePoint promise = attendChannelState.get(channel);
 		
-		PromiseType type = promise.getType();
-		
 		PlayerManager manager = promise.getManager();
 		GameVO game = promise.getGame();
 		
@@ -95,16 +91,21 @@ public abstract class PromiseManager {
 		int maxNum = manager.getMaxNum();
 		
 		String message = isFull(channel)
-				? type == PromiseType.ATTEND
+				? isAttendType(channel)
 					? CurrentUserStatusVO.FULL_MESSAGE
 					: LaunchVO.GAME_START_MESSAGE
 				: CurrentUserStatusVO.REQUIRE_MESSAGE;
 		
-		CurrentUserStatusVO result = type == PromiseType.ATTEND
+		CurrentUserStatusVO result = isAttendType(channel)
 				? new CurrentUserStatusVO(message, playerNum, maxNum)
 				: new LaunchVO(message, playerNum, maxNum, game);
 		
 		return result;
 
+	}
+	
+	public static boolean isAttendType(GuildMessageChannel channel) {
+		PromiseType type = attendChannelState.get(channel).getType();
+		return type == PromiseType.ATTEND;
 	}
 }

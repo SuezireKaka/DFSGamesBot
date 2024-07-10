@@ -16,6 +16,8 @@ public class GameVO {
 	public static final String EDGE_SEPERATOR = "\r\n";
 	public static final String VERTEX_SEPERATOR = ",";
 	
+	private boolean isStarted = false;
+	
 	private String name;
 	private String description;
 	private Visitor<String> visitor = new Visitor<>();
