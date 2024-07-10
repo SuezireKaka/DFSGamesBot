@@ -58,9 +58,11 @@ public class LaunchCommand implements Command {
 		}
 		
 		PromiseManager.openTo(channel, playerNum, user, PromiseType.LAUNCH);
+		PromiseManager.launchGameTo(channel, game);
+		
 		PromiseManager.join(channel, user);
 		
-		LaunchVO result = new LaunchVO(game, PromiseManager.calcStatus(channel));
+		LaunchVO result = (LaunchVO) PromiseManager.calcStatus(channel);
 		
 		DiscordContents contents = new DiscordContents(new LaunchParser(result));
 	   	

@@ -29,8 +29,7 @@ public class LaunchParser extends DiscordParser {
 		Pair<ParseType, String> statusKey = new Pair<>(ParseType.KEY, statusKeyString);
 		
 		String statusValString = CurrentUserStatusVO.STATUS_FORMAT.formatted(
-				vo.getStatus().getNowNumber(),
-				vo.getStatus().getRequiredNumber());
+				vo.getNowNumber(), vo.getRequiredNumber());
 		Pair<ParseType, String> statusVal = new Pair<>(ParseType.VAL, statusValString);
 		
 		lemma.add(messageKey);

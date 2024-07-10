@@ -11,6 +11,7 @@ import www.disbot.dfsGames.bot.exception.NotMakerException;
 import www.disbot.dfsGames.bot.exception.UnbookedChannelException;
 import www.disbot.dfsGames.bot.model.data.CurrentUserStatusVO;
 import www.disbot.dfsGames.game.model.GameVO;
+import www.disbot.dfsGames.game.model.LaunchVO;
 import www.disbot.dfsGames.game.player.PlayerManager;
 
 public abstract class PromiseManager {
@@ -57,6 +58,20 @@ public abstract class PromiseManager {
 				? "성공적으로"
 				: "봇 제작자에 의해";
 	}
+
+	public static PromisePoint join(MessageChannel channel, User user)
+			throws Exception {
+		
+		if (! attendChannelState.containsKey(channel)) {
+			throw new UnbookedChannelException(channel);
+		}
+		
+		PromisePoint point = attendChannelState.get(channel);
+		
+		point.getManager().join(user);
+		
+		return point;
+	}
 	
 	public static void forceClose(MessageChannel channel)
 			throws Exception {
@@ -68,21 +83,20 @@ public abstract class PromiseManager {
 		attendChannelState.remove(channel);
 	}
 
-	public static void join(MessageChannel channel, User user)
-			throws Exception {
-		
-		if (! attendChannelState.containsKey(channel)) {
-			throw new UnbookedChannelException(channel);
-		}
-		
-		attendChannelState.get(channel).getManager().join(user);
-	}
-
 	public static CurrentUserStatusVO calcStatus(GuildMessageChannel channel) {
-		PlayerManager manager = attendChannelState.get(channel).getManager();
+		PromisePoint promise = attendChannelState.get(channel);
 		
-		CurrentUserStatusVO result = new CurrentUserStatusVO(
-				manager.getPlayerList().size(), manager.getMaxNum());
+		PromiseType type = promise.getType();
+		
+		PlayerManager manager = promise.getManager();
+		GameVO game = promise.getGame();
+		
+		int playerNum = manager.getPlayerList().size();
+		int maxNum = manager.getMaxNum();
+		
+		CurrentUserStatusVO result = type == PromiseType.ATTEND
+				? new CurrentUserStatusVO(playerNum, maxNum)
+				: new LaunchVO(playerNum, maxNum, game);
 		
 		result.setMessage(isFull(channel)
 				? CurrentUserStatusVO.FULL_MESSAGE

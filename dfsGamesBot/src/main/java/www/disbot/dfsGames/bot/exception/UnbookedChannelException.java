@@ -6,7 +6,7 @@ public class UnbookedChannelException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	public UnbookedChannelException(MessageChannel channel) {
-		super("Channel \"%s\" is not open for this attendance"
+		super("Channel \"%s\" is not open for any promise"
 					.formatted(channel.getAsMention()));
 	}
 }
