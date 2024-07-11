@@ -36,10 +36,18 @@ public class GameFlowParser extends DiscordParser {
 				.formatted(vo.getNowTurn());
 		Pair<ParseType, String> turnVal = new Pair<>(ParseType.VAL, turnValString);
 		
+		String actionKeyString = GameFlowVO.ACTION_TITLE;
+		Pair<ParseType, String> actionKey = new Pair<>(ParseType.KEY, actionKeyString);
+		
+		String actionValString = vo.getAction();
+		Pair<ParseType, String> actionVal = new Pair<>(ParseType.VAL, actionValString);
+		
 		lemma.add(orderKey);
 		lemma.add(orderVal);
 		lemma.add(turnKey);
 		lemma.add(turnVal);
+		lemma.add(actionKey);
+		lemma.add(actionVal);
 
 		return lemma;
 		

@@ -49,23 +49,10 @@ public class LaunchParser extends DiscordParser {
 		lemma.add(statusVal);
 		
 		if (vo.getGame().isStarted()) {
-			String orderKeyString = GameFlowVO.PLAYER_ORDER_TITLE;
-			Pair<ParseType, String> orderKey = new Pair<>(ParseType.KEY, orderKeyString);
+			GameFlowVO flow = new GameFlowVO(vo);
+			GameFlowParser parser = new GameFlowParser(flow);
 			
-			String orderValString = vo.getManager().getPlayerOrder();
-			Pair<ParseType, String> orderVal = new Pair<>(ParseType.VAL, orderValString);
-			
-			String turnKeyString = GameFlowVO.TURN_TITLE;
-			Pair<ParseType, String> turnKey = new Pair<>(ParseType.KEY, turnKeyString);
-			
-			String turnValString = GameFlowVO.TURN_FORMAT.formatted(
-					vo.getManager().getPlayerList().get(0).getAsMention());
-			Pair<ParseType, String> turnVal = new Pair<>(ParseType.VAL, turnValString);
-			
-			lemma.add(orderKey);
-			lemma.add(orderVal);
-			lemma.add(turnKey);
-			lemma.add(turnVal);
+			lemma.addAll(parser.parseLemma());
 		}
 
 		return lemma;

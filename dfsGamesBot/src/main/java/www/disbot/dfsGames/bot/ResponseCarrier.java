@@ -7,7 +7,6 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.utils.FileUpload;
 import www.disbot.dfsGames.bot.model.structure.Pair;
 import www.disbot.dfsGames.bot.view.View;
