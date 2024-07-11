@@ -29,8 +29,12 @@ public abstract class PromiseManager {
 	}
 	
 	public static boolean isStarted(MessageChannel channel) {
-		GameVO game = attendChannelState.get(channel).getGame();
-		return game != null && game.isStarted();
+		if (isOpen(channel)) {
+			GameVO game = attendChannelState.get(channel).getGame();
+			return game != null && game.isStarted();
+		}
+		
+		return false;
 	}
 	
 	public static boolean isAttendType(GuildMessageChannel channel) {
@@ -42,7 +46,7 @@ public abstract class PromiseManager {
 		return type == PromiseType.ATTEND;
 	}
 	
-	public static boolean hasPoint(GuildMessageChannel channel, String vertex) {
+	public static boolean hasVertex(GuildMessageChannel channel, String vertex) {
 		GameVO game = attendChannelState.get(channel).getGame();
 		return game != null && game.getBackground().hasVertex(vertex);
 	}
@@ -56,6 +60,10 @@ public abstract class PromiseManager {
 	
 	public static void launchGameTo(MessageChannel channel, GameVO game) {
 		attendChannelState.get(channel).setGame(game);
+	}
+	
+	public static String getGameName(MessageChannel channel) {
+		return attendChannelState.get(channel).getGame().getName();
 	}
 	
 	public static String close(MessageChannel channel, User user)
@@ -125,7 +133,6 @@ public abstract class PromiseManager {
 				: new LaunchVO(message, playerNum, maxNum, game, manager);
 		
 		return result;
-
 	}
 
 	public static void startGame(GuildMessageChannel channel) {

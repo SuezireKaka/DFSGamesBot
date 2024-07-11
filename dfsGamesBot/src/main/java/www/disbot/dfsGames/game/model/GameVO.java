@@ -43,7 +43,7 @@ public class GameVO {
 			String[] pair = edge.split(VERTEX_SEPERATOR);
 			background.addEdge(new Pair<>(pair[0], pair[1]));
 			
-			if (isDirected) {
+			if (! isDirected) {
 				background.addEdge(new Pair<>(pair[1], pair[0]));
 			}
 		}

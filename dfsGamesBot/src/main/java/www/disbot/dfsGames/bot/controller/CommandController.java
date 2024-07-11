@@ -14,6 +14,7 @@ import www.disbot.dfsGames.bot.command.impl.HelloWorldCommand;
 import www.disbot.dfsGames.bot.command.impl.JoinCommand;
 import www.disbot.dfsGames.bot.command.impl.LaunchCommand;
 import www.disbot.dfsGames.bot.command.impl.ListAllCommand;
+import www.disbot.dfsGames.bot.command.impl.MoveCommand;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.exception.NoCommandFoundException;
 import www.disbot.dfsGames.bot.view.View;
@@ -95,6 +96,16 @@ public class CommandController {
 
         	result = new JoinCommand().command(user, channel, packedArgs);
         	result.init(JoinCommand.class);
+        }
+		
+		else if (key.equalsIgnoreCase(MoveCommand.COMMAND)
+        		&& args.length == new MoveCommand().getArgsNameArray().length) {
+			
+        	packedArgs = new ArgsPacker<MoveCommand>()
+                	.mapPack(new MoveCommand(), args);
+
+        	result = new MoveCommand().command(user, channel, packedArgs);
+        	result.init(MoveCommand.class);
         }
 		
 		else if (key.equalsIgnoreCase(CancelCommand.COMMAND)

@@ -7,14 +7,10 @@ import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
-import www.disbot.dfsGames.bot.exception.UnbookedChannelException;
-import www.disbot.dfsGames.bot.model.data.CurrentUserStatusVO;
-import www.disbot.dfsGames.bot.parser.DiscordContents;
-import www.disbot.dfsGames.bot.parser.impl.CurrentUserStatusParser;
-import www.disbot.dfsGames.bot.parser.impl.LaunchParser;
+import www.disbot.dfsGames.bot.exception.NoVertexFoundException;
+import www.disbot.dfsGames.bot.exception.NotStartedException;
 import www.disbot.dfsGames.bot.view.View;
-import www.disbot.dfsGames.bot.view.impl.CommandResultView;
-import www.disbot.dfsGames.game.model.LaunchVO;
+import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
 import www.disbot.dfsGames.game.promise.PromiseManager;
 
 public class MoveCommand implements Command {
@@ -39,34 +35,17 @@ public class MoveCommand implements Command {
 					ARGS_NAME_ARRAY);
 		}
 		
-		if (! PromiseManager.isOpen(channel)) {
-			throw new UnbookedChannelException(channel);
+		if (! PromiseManager.isStarted(channel)) {
+			throw new NotStartedException();
 		}
 		
-		PromiseManager.join(channel, user);
+		String vertex = argsMap.get(ARGS_NAME_ARRAY[0]);
 		
-		CurrentUserStatusVO result = PromiseManager.calcStatus(channel);
-		
-		if (PromiseManager.isFull(channel)) {
-			if (PromiseManager.isAttendType(channel)) {
-				
-				PromiseManager.forceClose(channel);
-			}
-			else {
-				PromiseManager.startGame(channel);
-				result = PromiseManager.calcStatus(channel);
-			}
+		if (! PromiseManager.hasVertex(channel, vertex)) {
+			throw new NoVertexFoundException(
+					PromiseManager.getGameName(channel), vertex);
 		}
 		
-		DiscordContents contents = PromiseManager.isAttendType(channel)
-				? new DiscordContents(new CurrentUserStatusParser(result))
-				: new DiscordContents(new LaunchParser((LaunchVO) result));
-	   	
-		contents.parse();
-		
-		return CommandResultView.builder()
-	   			.title(USAGE)
-	   			.contents(contents)
-	   			.build();
+		return new UnderPreparingView(UnderPreparingView.DEFAULT_MESSAGE);
 	}
 }
