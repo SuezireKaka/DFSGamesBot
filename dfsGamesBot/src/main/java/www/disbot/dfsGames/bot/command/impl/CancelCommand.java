@@ -16,7 +16,7 @@ import www.disbot.dfsGames.game.promise.PromiseManager;
 
 public class CancelCommand implements Command {
 	public static final String COMMAND = Command.PREFIX + "cancel";
-	public static final String EXPLAIN = "주최자 또는 제작자가 자신이 연 모임을 취소해요";
+	public static final String EXPLAIN = "주최자 또는 제작자가 모임을 취소해요";
 	
 	private static final String[] ARGS_NAME_ARRAY = new String[]{};
 	

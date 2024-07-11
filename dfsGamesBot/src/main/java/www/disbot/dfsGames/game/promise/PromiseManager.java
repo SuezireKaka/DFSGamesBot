@@ -42,6 +42,11 @@ public abstract class PromiseManager {
 		return type == PromiseType.ATTEND;
 	}
 	
+	public static boolean hasPoint(GuildMessageChannel channel, String vertex) {
+		GameVO game = attendChannelState.get(channel).getGame();
+		return game != null && game.getBackground().hasVertex(vertex);
+	}
+	
 	public static void openTo(MessageChannel channel,
 			int userNum, User user, PromiseType type) {
 		

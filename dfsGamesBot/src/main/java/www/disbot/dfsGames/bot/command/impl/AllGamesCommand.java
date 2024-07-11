@@ -26,8 +26,6 @@ public class AllGamesCommand implements Command {
 	
 	public static final String USAGE = ArgsPacker.usagePack(COMMAND, ARGS_NAME_ARRAY);
 	
-	public static final String EXTENSION_POINT = ".";
-	
 	@Override
 	public String[] getArgsNameArray() {
 		return ARGS_NAME_ARRAY.clone();

@@ -36,4 +36,11 @@ public class AdjacencyMapGraph<V> implements Graph<V> {
 				? adjacencyMap.get(vertex)
 				: new ArrayList<>();
 	}
+
+	@Override
+	public boolean hasVertex(V vertex) {
+		return adjacencyMap.containsKey(vertex) ||
+				adjacencyMap.values().stream()
+					.anyMatch(list -> list.contains(vertex));
+	}
 }

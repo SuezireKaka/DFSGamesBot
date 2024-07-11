@@ -12,4 +12,6 @@ public interface Graph<V> {
 	public void addEdge(Pair<V, V> edge);
 
 	public List<V> getNeighborsList(V vertex);
+
+	public boolean hasVertex(V vertex);
 }
