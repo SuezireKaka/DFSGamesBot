@@ -8,7 +8,9 @@ import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
 import www.disbot.dfsGames.bot.exception.NoVertexFoundException;
+import www.disbot.dfsGames.bot.exception.NotPlayerException;
 import www.disbot.dfsGames.bot.exception.NotStartedException;
+import www.disbot.dfsGames.bot.exception.NotYourTurnException;
 import www.disbot.dfsGames.bot.view.View;
 import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
 import www.disbot.dfsGames.game.promise.PromiseManager;
@@ -37,6 +39,16 @@ public class MoveCommand implements Command {
 		
 		if (! PromiseManager.isStarted(channel)) {
 			throw new NotStartedException();
+		}
+		
+		if (! PromiseManager.isPlayer(channel, user)) {
+			throw new NotPlayerException(channel);
+		}
+		
+		User nowTurn = PromiseManager.nowTurn(channel);
+		
+		if (! user.equals(nowTurn)) {
+			throw new NotYourTurnException(nowTurn);
 		}
 		
 		String vertex = argsMap.get(ARGS_NAME_ARRAY[0]);

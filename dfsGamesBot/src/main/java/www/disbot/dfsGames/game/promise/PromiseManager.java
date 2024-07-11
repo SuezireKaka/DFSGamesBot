@@ -46,6 +46,12 @@ public abstract class PromiseManager {
 		return type == PromiseType.ATTEND;
 	}
 	
+	public static boolean isPlayer(GuildMessageChannel channel, User user) {
+		return attendChannelState.get(channel).getManager()
+				.getPlayerList()
+				.contains(user);
+	}
+	
 	public static boolean hasVertex(GuildMessageChannel channel, String vertex) {
 		GameVO game = attendChannelState.get(channel).getGame();
 		return game != null && game.getBackground().hasVertex(vertex);
@@ -143,5 +149,9 @@ public abstract class PromiseManager {
 		
 		manager.shuffle();
 		game.start();
+	}
+	
+	public static User nowTurn(GuildMessageChannel channel) {
+		return attendChannelState.get(channel).getManager().nowTurn();
 	}
 }

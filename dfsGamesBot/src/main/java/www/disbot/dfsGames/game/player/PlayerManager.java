@@ -40,6 +40,10 @@ public class PlayerManager {
 		Collections.shuffle(playerList);
 	}
 	
+	public User nowTurn() {		
+		return playerList.get(playerIndex);
+	}
+	
 	public User nextTurn() {
 		playerIndex = (playerIndex + 1) % playerList.size();
 		

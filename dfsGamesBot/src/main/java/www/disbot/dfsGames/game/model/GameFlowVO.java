@@ -35,8 +35,7 @@ public class GameFlowVO {
 		PlayerManager manager = launch.getManager();
 		
 		this.order = manager.getPlayerOrder();
-		this.nowTurn = manager.getPlayerList().get(manager.getPlayerIndex())
-				.getAsMention();
+		this.nowTurn = manager.nowTurn().getAsMention();
 		
 		this.action = FIRST_TURN_ACTION.formatted(MoveCommand.USAGE, ANY_YOU_WANT);
 	}
