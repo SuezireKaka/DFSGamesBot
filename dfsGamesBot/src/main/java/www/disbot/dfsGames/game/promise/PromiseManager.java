@@ -11,6 +11,7 @@ import www.disbot.dfsGames.bot.exception.AlreadyStartedGameException;
 import www.disbot.dfsGames.bot.exception.NotMakerException;
 import www.disbot.dfsGames.bot.exception.UnbookedChannelException;
 import www.disbot.dfsGames.bot.model.data.CurrentUserStatusVO;
+import www.disbot.dfsGames.game.model.GameFlowVO;
 import www.disbot.dfsGames.game.model.GameVO;
 import www.disbot.dfsGames.game.model.LaunchVO;
 import www.disbot.dfsGames.game.player.PlayerManager;
@@ -19,16 +20,16 @@ public abstract class PromiseManager {
 	private static final Map<MessageChannel, PromisePoint> attendChannelState =
 			new HashMap<>();
 	
-	public static boolean isOpen(MessageChannel channel) {
+	public static boolean isOpen(GuildMessageChannel channel) {
 		return attendChannelState.containsKey(channel);
 	}
 	
-	public static boolean isFull(MessageChannel channel) {
+	public static boolean isFull(GuildMessageChannel channel) {
 		return attendChannelState.get(channel).getManager()
 				.isFull();
 	}
 	
-	public static boolean isStarted(MessageChannel channel) {
+	public static boolean isStarted(GuildMessageChannel channel) {
 		if (isOpen(channel)) {
 			GameVO game = attendChannelState.get(channel).getGame();
 			return game != null && game.isStarted();
@@ -57,22 +58,27 @@ public abstract class PromiseManager {
 		return game != null && game.getBackground().hasVertex(vertex);
 	}
 	
-	public static void openTo(MessageChannel channel,
+	public static boolean hasVisited(GuildMessageChannel channel, String vertex) {
+		return attendChannelState.get(channel)
+				.getGame().getVisitor().hasVisited(vertex);
+	}
+	
+	public static void openTo(GuildMessageChannel channel,
 			int userNum, User user, PromiseType type) {
 		
 		attendChannelState.put(channel, new PromisePoint(
 				type, new PlayerManager(userNum, channel, user)));
 	}
 	
-	public static void launchGameTo(MessageChannel channel, GameVO game) {
+	public static void launchGameTo(GuildMessageChannel channel, GameVO game) {
 		attendChannelState.get(channel).setGame(game);
 	}
 	
-	public static String getGameName(MessageChannel channel) {
+	public static String getGameName(GuildMessageChannel channel) {
 		return attendChannelState.get(channel).getGame().getName();
 	}
 	
-	public static String close(MessageChannel channel, User user)
+	public static String close(GuildMessageChannel channel, User user)
 			throws Exception {
 		
 		if (! attendChannelState.containsKey(channel)) {
@@ -93,7 +99,7 @@ public abstract class PromiseManager {
 				: "봇 제작자에 의해";
 	}
 
-	public static void join(MessageChannel channel, User user)
+	public static void join(GuildMessageChannel channel, User user)
 			throws Exception {
 		
 		if (! attendChannelState.containsKey(channel)) {
@@ -109,7 +115,7 @@ public abstract class PromiseManager {
 		point.getManager().join(user);
 	}
 	
-	public static void forceClose(MessageChannel channel)
+	public static void forceClose(GuildMessageChannel channel)
 			throws Exception {
 		
 		if (! attendChannelState.containsKey(channel)) {
@@ -153,5 +159,9 @@ public abstract class PromiseManager {
 	
 	public static User nowTurn(GuildMessageChannel channel) {
 		return attendChannelState.get(channel).getManager().nowTurn();
+	}
+
+	public static GameFlowVO visitVertex(GuildMessageChannel channel, String vertex) throws Exception {
+		return attendChannelState.get(channel).visit(vertex);
 	}
 }

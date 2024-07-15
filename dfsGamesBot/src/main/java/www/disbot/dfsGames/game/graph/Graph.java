@@ -7,11 +7,11 @@ import www.disbot.dfsGames.bot.model.structure.Pair;
 public interface Graph<V> {
 	public int size();
 	
-	public boolean isAllConnected();
-	
 	public void addEdge(Pair<V, V> edge);
+	
+	public List<V> copyVerticesList();
 
-	public List<V> getNeighborsList(V vertex);
+	public List<V> copyNeighborsList(V vertex);
 
 	public boolean hasVertex(V vertex);
 }

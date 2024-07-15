@@ -10,6 +10,8 @@ public interface ContentsParser {
 	public static final String OMIT_SUFFIX = "(...";
 	public static final String OMIT_PREFIX = "...)";
 	
+	public static final String OMIT = "(...)\n";
+	
 	public static final int MAX_ONE_VALUE_LENGTH = 800;
 	
 	public static final String LIST_SEPERATOR = "\n";

@@ -16,12 +16,6 @@ public class AdjacencyMapGraph<V> implements Graph<V> {
 	}
 
 	@Override
-	public boolean isAllConnected() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void addEdge(Pair<V, V> edge) {
 		V key = edge.getFirst();
 		if (! adjacencyMap.containsKey(key)) {
@@ -31,10 +25,24 @@ public class AdjacencyMapGraph<V> implements Graph<V> {
 	}
 	
 	@Override
-	public List<V> getNeighborsList(V vertex) {
-		return adjacencyMap.containsKey(vertex)
-				? adjacencyMap.get(vertex)
-				: new ArrayList<>();
+	public List<V> copyVerticesList() {
+		List<V> result = new ArrayList<>();
+		
+		for (V v : adjacencyMap.keySet()) {
+			result.add(v);
+		}
+		return result;
+	}
+	
+	@Override
+	public List<V> copyNeighborsList(V vertex) {
+		List<V> result = new ArrayList<>();
+		
+		if (adjacencyMap.containsKey(vertex)) {
+			result.addAll(adjacencyMap.get(vertex));
+		}
+		
+		return result;
 	}
 
 	@Override

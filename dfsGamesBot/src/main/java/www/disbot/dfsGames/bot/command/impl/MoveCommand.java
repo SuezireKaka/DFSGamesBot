@@ -6,13 +6,17 @@ import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 import www.disbot.dfsGames.bot.command.Command;
 import www.disbot.dfsGames.bot.controller.args.ArgsPacker;
+import www.disbot.dfsGames.bot.exception.AlreadyVisitedException;
 import www.disbot.dfsGames.bot.exception.ArgsNumberDismatchException;
 import www.disbot.dfsGames.bot.exception.NoVertexFoundException;
 import www.disbot.dfsGames.bot.exception.NotPlayerException;
 import www.disbot.dfsGames.bot.exception.NotStartedException;
 import www.disbot.dfsGames.bot.exception.NotYourTurnException;
+import www.disbot.dfsGames.bot.parser.DiscordContents;
+import www.disbot.dfsGames.bot.parser.impl.GameFlowParser;
 import www.disbot.dfsGames.bot.view.View;
-import www.disbot.dfsGames.bot.view.impl.UnderPreparingView;
+import www.disbot.dfsGames.bot.view.impl.CommandResultView;
+import www.disbot.dfsGames.game.model.GameFlowVO;
 import www.disbot.dfsGames.game.promise.PromiseManager;
 
 public class MoveCommand implements Command {
@@ -58,6 +62,19 @@ public class MoveCommand implements Command {
 					PromiseManager.getGameName(channel), vertex);
 		}
 		
-		return new UnderPreparingView(UnderPreparingView.DEFAULT_MESSAGE);
+		if (PromiseManager.hasVisited(channel, vertex)) {
+			throw new AlreadyVisitedException(vertex);
+		}
+		
+		GameFlowVO result = PromiseManager.visitVertex(channel, vertex);
+		
+		DiscordContents contents = new DiscordContents(new GameFlowParser(result));
+	   	
+		contents.parse();
+		
+		return CommandResultView.builder()
+	   			.title(USAGE)
+	   			.contents(contents)
+	   			.build();
 	}
 }
